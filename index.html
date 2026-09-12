@@ -1,1 +1,1634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<title>The Keyboard We All Wished For!!</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+:root{
+    --text:#111827;
+    --muted:#6b7280;
+
+    --card:rgba(255,255,255,0.58);
+    --card-border:rgba(255,255,255,0.72);
+
+    --input:rgba(255,255,255,0.52);
+    --input-border:rgba(255,255,255,0.8);
+
+    --accent:#6366f1;
+    --accent2:#8b5cf6;
+
+    --danger:#ef4444;
+
+    --shadow:0 25px 70px rgba(31,38,135,0.15);
+}
+
+body.dark{
+    --text:#f8fafc;
+    --muted:#a1a1aa;
+
+    --card:rgba(17,24,39,0.55);
+    --card-border:rgba(255,255,255,0.12);
+
+    --input:rgba(30,41,59,0.65);
+    --input-border:rgba(255,255,255,0.12);
+
+    --shadow:0 25px 70px rgba(0,0,0,0.4);
+}
+
+html,
+body{
+    min-height:100%;
+}
+
+body{
+    font-family:'Inter',sans-serif;
+    color:var(--text);
+
+    overflow-x:hidden;
+
+    background:
+        radial-gradient(
+            circle at 10% 20%,
+            rgba(99,102,241,.28),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 90% 20%,
+            rgba(168,85,247,.25),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 50% 100%,
+            rgba(14,165,233,.20),
+            transparent 35%
+        ),
+        linear-gradient(
+            135deg,
+            #eef2ff,
+            #f8fafc,
+            #ede9fe
+        );
+
+    transition:
+        background .5s ease,
+        color .4s ease;
+}
+
+body.dark{
+    background:
+        radial-gradient(
+            circle at 10% 20%,
+            rgba(79,70,229,.25),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 90% 20%,
+            rgba(124,58,237,.25),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 50% 100%,
+            rgba(8,145,178,.18),
+            transparent 35%
+        ),
+        linear-gradient(
+            135deg,
+            #020617,
+            #0f172a,
+            #111827
+        );
+}
+
+
+/* =========================================
+   ANIMATED BACKGROUND
+========================================= */
+
+.background{
+    position:fixed;
+    inset:0;
+
+    overflow:hidden;
+
+    pointer-events:none;
+
+    z-index:-1;
+}
+
+.blob{
+    position:absolute;
+
+    border-radius:50%;
+
+    filter:blur(75px);
+
+    opacity:.35;
+
+    animation:
+        floating 16s
+        infinite alternate
+        ease-in-out;
+}
+
+.blob.one{
+    width:330px;
+    height:330px;
+
+    background:#818cf8;
+
+    left:-100px;
+    top:50px;
+}
+
+.blob.two{
+    width:400px;
+    height:400px;
+
+    background:#c084fc;
+
+    right:-130px;
+    top:150px;
+
+    animation-delay:-5s;
+}
+
+.blob.three{
+    width:300px;
+    height:300px;
+
+    background:#38bdf8;
+
+    left:40%;
+    bottom:-130px;
+
+    animation-delay:-9s;
+}
+
+@keyframes floating{
+
+    0%{
+        transform:
+            translate(0,0)
+            scale(1);
+    }
+
+    50%{
+        transform:
+            translate(70px,-60px)
+            scale(1.15);
+    }
+
+    100%{
+        transform:
+            translate(-50px,70px)
+            scale(.95);
+    }
+
+}
+
+
+/* =========================================
+   PAGE
+========================================= */
+
+.page{
+    width:min(1400px,94%);
+
+    margin:auto;
+
+    padding:
+        28px
+        0
+        40px;
+}
+
+
+/* =========================================
+   TOP BAR
+========================================= */
+
+.topbar{
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    margin-bottom:35px;
+}
+
+.logo{
+    font-family:'Space Grotesk',sans-serif;
+
+    font-size:
+        clamp(
+            18px,
+            2.2vw,
+            27px
+        );
+
+    font-weight:800;
+
+    letter-spacing:-.5px;
+}
+
+.theme-btn{
+    width:48px;
+    height:48px;
+
+    border-radius:15px;
+
+    border:
+        1px solid
+        var(--card-border);
+
+    background:var(--card);
+
+    backdrop-filter:blur(20px);
+
+    -webkit-backdrop-filter:blur(20px);
+
+    box-shadow:var(--shadow);
+
+    cursor:pointer;
+
+    font-size:20px;
+
+    color:var(--text);
+
+    transition:.3s;
+}
+
+.theme-btn:hover{
+    transform:
+        translateY(-3px)
+        rotate(5deg);
+}
+
+
+/* =========================================
+   HERO
+========================================= */
+
+.hero{
+    text-align:center;
+
+    max-width:1000px;
+
+    margin:
+        0 auto
+        40px;
+}
+
+.hero h1{
+    font-family:'Space Grotesk',sans-serif;
+
+    font-size:
+        clamp(
+            40px,
+            7vw,
+            82px
+        );
+
+    font-weight:900;
+
+    line-height:.98;
+
+    letter-spacing:-4px;
+}
+
+.hero h1 span{
+    display:block;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--accent),
+            var(--accent2)
+        );
+
+    -webkit-background-clip:text;
+    background-clip:text;
+
+    color:transparent;
+}
+
+.hero p{
+    max-width:650px;
+
+    margin:
+        20px auto
+        0;
+
+    color:var(--muted);
+
+    font-size:
+        clamp(
+            14px,
+            2vw,
+            17px
+        );
+
+    line-height:1.7;
+}
+
+
+/* =========================================
+   MAIN GRID
+========================================= */
+
+.main-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        minmax(0,1.15fr)
+        minmax(350px,.85fr);
+
+    gap:25px;
+
+    align-items:stretch;
+}
+
+
+/* =========================================
+   GLASS CARD
+========================================= */
+
+.glass{
+    background:var(--card);
+
+    border:
+        1px solid
+        var(--card-border);
+
+    backdrop-filter:blur(25px);
+
+    -webkit-backdrop-filter:blur(25px);
+
+    box-shadow:var(--shadow);
+
+    border-radius:30px;
+}
+
+
+/* =========================================
+   KID CARD
+========================================= */
+
+.kid-card{
+
+    min-height:650px;
+
+    overflow:hidden;
+
+    position:relative;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    padding:20px;
+}
+
+.kid-card img{
+
+    width:100%;
+    height:100%;
+
+    object-fit:cover;
+
+    border-radius:23px;
+
+    display:block;
+
+    transition:
+        opacity .5s ease,
+        transform .6s ease;
+
+}
+
+.kid-card:hover img{
+
+    transform:scale(1.015);
+
+}
+
+
+/* =========================================
+   LOGIN CARD
+========================================= */
+
+.login-card{
+
+    padding:
+        42px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    min-height:650px;
+}
+
+.login-header{
+    margin-bottom:30px;
+}
+
+.login-header .mini-title{
+
+    text-transform:uppercase;
+
+    letter-spacing:2px;
+
+    font-size:11px;
+
+    font-weight:900;
+
+    color:var(--accent);
+
+    margin-bottom:9px;
+}
+
+.login-header h2{
+
+    font-family:'Space Grotesk',sans-serif;
+
+    font-size:
+        clamp(
+            30px,
+            4vw,
+            46px
+        );
+
+    font-weight:900;
+
+    letter-spacing:-2px;
+
+    line-height:1;
+}
+
+.login-header p{
+
+    color:var(--muted);
+
+    margin-top:12px;
+
+    font-size:14px;
+
+    line-height:1.6;
+}
+
+
+/* =========================================
+   FORM
+========================================= */
+
+.form-group{
+
+    margin-bottom:19px;
+}
+
+.form-group label{
+
+    display:block;
+
+    margin-bottom:8px;
+
+    font-size:12px;
+
+    font-weight:800;
+
+    color:var(--muted);
+
+    text-transform:uppercase;
+
+    letter-spacing:1px;
+}
+
+.input-wrapper{
+
+    position:relative;
+}
+
+.input-wrapper span{
+
+    position:absolute;
+
+    left:16px;
+
+    top:50%;
+
+    transform:translateY(-50%);
+
+    font-size:17px;
+
+    opacity:.65;
+
+    pointer-events:none;
+}
+
+.form-input{
+
+    width:100%;
+
+    height:56px;
+
+    padding:
+        0
+        17px
+        0
+        46px;
+
+    border-radius:16px;
+
+    border:
+        1px solid
+        var(--input-border);
+
+    outline:none;
+
+    background:var(--input);
+
+    color:var(--text);
+
+    font-family:'Inter',sans-serif;
+
+    font-size:14px;
+
+    font-weight:600;
+
+    backdrop-filter:blur(15px);
+
+    transition:.25s;
+}
+
+.form-input::placeholder{
+
+    color:var(--muted);
+
+    font-weight:500;
+}
+
+.form-input:focus{
+
+    border-color:
+        rgba(99,102,241,.65);
+
+    box-shadow:
+        0 0 0 4px
+        rgba(99,102,241,.10);
+
+    transform:
+        translateY(-1px);
+}
+
+
+/* =========================================
+   PLAY BUTTON
+========================================= */
+
+.play-btn{
+
+    width:100%;
+
+    height:58px;
+
+    margin-top:8px;
+
+    border:none;
+
+    border-radius:17px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--accent),
+            var(--accent2)
+        );
+
+    color:white;
+
+    font-family:'Space Grotesk',sans-serif;
+
+    font-size:15px;
+
+    font-weight:900;
+
+    letter-spacing:.5px;
+
+    cursor:pointer;
+
+    box-shadow:
+        0 15px 30px
+        rgba(99,102,241,.25);
+
+    transition:
+        transform .25s,
+        box-shadow .25s;
+}
+
+.play-btn:hover{
+
+    transform:
+        translateY(-3px);
+
+    box-shadow:
+        0 20px 40px
+        rgba(99,102,241,.35);
+}
+
+.play-btn:active{
+
+    transform:
+        translateY(0)
+        scale(.98);
+}
+
+
+/* =========================================
+   FUNNY MESSAGE
+========================================= */
+
+.good-luck{
+
+    text-align:center;
+
+    margin-top:22px;
+
+    padding:
+        15px;
+
+    border-radius:16px;
+
+    background:
+        rgba(99,102,241,.07);
+
+    border:
+        1px solid
+        rgba(99,102,241,.10);
+
+    color:var(--muted);
+
+    font-size:12px;
+
+    line-height:1.6;
+}
+
+.good-luck strong{
+
+    display:block;
+
+    color:var(--text);
+
+    font-size:13px;
+
+    margin-bottom:3px;
+}
+
+
+/* =========================================
+   HOW TO PLAY
+========================================= */
+
+.how-to{
+
+    margin-top:25px;
+
+    padding:28px;
+}
+
+.how-title{
+
+    text-align:center;
+
+    font-family:'Space Grotesk',sans-serif;
+
+    font-size:23px;
+
+    font-weight:900;
+
+    margin-bottom:22px;
+}
+
+.instructions{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:15px;
+}
+
+.instruction{
+
+    padding:20px;
+
+    border-radius:20px;
+
+    background:
+        rgba(255,255,255,.20);
+
+    border:
+        1px solid
+        var(--card-border);
+
+    text-align:center;
+}
+
+body.dark .instruction{
+
+    background:
+        rgba(255,255,255,.035);
+}
+
+.instruction-icon{
+
+    width:45px;
+    height:45px;
+
+    margin:
+        0 auto
+        12px;
+
+    border-radius:14px;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    background:
+        rgba(99,102,241,.10);
+
+    font-size:20px;
+}
+
+.instruction h3{
+
+    font-size:14px;
+
+    margin-bottom:6px;
+
+    font-weight:900;
+}
+
+.instruction p{
+
+    color:var(--muted);
+
+    font-size:11px;
+
+    line-height:1.5;
+}
+
+
+/* =========================================
+   KEYBOARD PREVIEW
+========================================= */
+
+.preview-card{
+
+    margin-top:25px;
+
+    padding:28px;
+
+    text-align:center;
+}
+
+.preview-title{
+
+    font-family:'Space Grotesk',sans-serif;
+
+    font-size:20px;
+
+    font-weight:900;
+
+    margin-bottom:6px;
+}
+
+.preview-subtitle{
+
+    color:var(--muted);
+
+    font-size:12px;
+
+    margin-bottom:20px;
+}
+
+.mini-keyboard{
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:9px;
+
+    flex-wrap:wrap;
+
+    max-width:800px;
+
+    margin:auto;
+}
+
+.mini-key{
+
+    width:70px;
+
+    height:62px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    justify-content:center;
+
+    border-radius:14px;
+
+    background:
+        var(--input);
+
+    border:
+        1px solid
+        var(--input-border);
+
+    box-shadow:
+        0 6px 15px
+        rgba(0,0,0,.06);
+}
+
+.mini-key strong{
+
+    font-size:15px;
+}
+
+.mini-key small{
+
+    color:var(--accent);
+
+    font-weight:800;
+
+    margin-top:3px;
+
+    font-size:11px;
+}
+
+
+/* =========================================
+   FOOTER
+========================================= */
+
+.footer{
+
+    text-align:center;
+
+    color:var(--muted);
+
+    font-size:11px;
+
+    padding-top:30px;
+}
+
+
+/* =========================================
+   ERROR MESSAGE
+========================================= */
+
+.error-message{
+
+    display:none;
+
+    color:var(--danger);
+
+    font-size:12px;
+
+    font-weight:700;
+
+    margin:
+        -8px 0
+        15px;
+
+    text-align:center;
+}
+
+.error-message.show{
+
+    display:block;
+
+    animation:
+        errorShake .3s;
+}
+
+@keyframes errorShake{
+
+    0%,100%{
+        transform:translateX(0);
+    }
+
+    25%{
+        transform:translateX(-5px);
+    }
+
+    75%{
+        transform:translateX(5px);
+    }
+
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media(max-width:950px){
+
+    .main-grid{
+
+        grid-template-columns:
+            1fr;
+    }
+
+    .kid-card{
+
+        min-height:
+            500px;
+    }
+
+    .login-card{
+
+        min-height:auto;
+    }
+
+}
+
+@media(max-width:650px){
+
+    .page{
+
+        width:94%;
+
+        padding-top:20px;
+    }
+
+    .hero h1{
+
+        letter-spacing:-2.5px;
+    }
+
+    .kid-card{
+
+        min-height:
+            400px;
+
+        padding:12px;
+
+        border-radius:23px;
+    }
+
+    .login-card{
+
+        padding:27px 20px;
+
+        border-radius:23px;
+    }
+
+    .instructions{
+
+        grid-template-columns:
+            1fr;
+    }
+
+    .how-to,
+    .preview-card{
+
+        padding:20px;
+    }
+
+    .mini-key{
+
+        width:58px;
+
+        height:55px;
+    }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<!-- =========================================
+     ANIMATED BACKGROUND
+========================================= -->
+
+<div class="background">
+
+    <div class="blob one"></div>
+
+    <div class="blob two"></div>
+
+    <div class="blob three"></div>
+
+</div>
+
+
+<main class="page">
+
+
+    <!-- =====================================
+         TOP BAR
+    ====================================== -->
+
+    <div class="topbar">
+
+        <div class="logo">
+            The Keyboard We All Wished For!!
+        </div>
+
+        <button
+            class="theme-btn"
+            id="themeBtn"
+            aria-label="Toggle theme"
+        >
+            🌙
+        </button>
+
+    </div>
+
+
+    <!-- =====================================
+         HERO
+    ====================================== -->
+
+    <section class="hero">
+
+        <h1>
+
+            THE KEYBOARD
+
+            <span>
+                WE ALL WISHED FOR!!
+            </span>
+
+        </h1>
+
+        <p>
+
+            A typing game where everything looks
+            completely normal... until you actually
+            start typing.
+
+        </p>
+
+    </section>
+
+
+    <!-- =====================================
+         LOGIN + KID
+    ====================================== -->
+
+    <section class="main-grid">
+
+
+        <!-- KID IMAGE -->
+
+        <div class="glass kid-card">
+
+            <img
+                id="kidImage"
+                src="kid1.jpg"
+                alt="Kid using a keyboard"
+            >
+
+        </div>
+
+
+        <!-- LOGIN -->
+
+        <div class="glass login-card">
+
+
+            <div class="login-header">
+
+                <div class="mini-title">
+                    ENTER THE GAME
+                </div>
+
+                <h2>
+                    Ready?
+                </h2>
+
+                <p>
+                    Enter your name and prepare
+                    yourself for the most unnecessarily
+                    complicated keyboard ever created.
+                </p>
+
+            </div>
+
+
+            <form id="loginForm">
+
+
+                <!-- NAME -->
+
+                <div class="form-group">
+
+                    <label for="name">
+                        Player Name
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <span>👤</span>
+
+                        <input
+                            type="text"
+                            id="name"
+                            class="form-input"
+                            placeholder="Enter your name"
+                            autocomplete="name"
+                            maxlength="30"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- PASSWORD -->
+
+                <div class="form-group">
+
+                    <label for="password">
+                        Password
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <span>🔒</span>
+
+                        <input
+                            type="password"
+                            id="password"
+                            class="form-input"
+                            placeholder="Enter any password"
+                            autocomplete="off"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="error-message"
+                    id="errorMessage"
+                >
+                    Please enter your name and password.
+                </div>
+
+
+                <!-- PLAY -->
+
+                <button
+                    type="submit"
+                    class="play-btn"
+                >
+
+                    PLAY THE GAME →
+
+                </button>
+
+
+            </form>
+
+
+            <!-- FUNNY MESSAGE -->
+
+            <div class="good-luck">
+
+                <strong>
+                    ⚠️ IMPORTANT
+                </strong>
+
+                There is absolutely no reason
+                you should be confident about Level 2.
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================
+         HOW TO PLAY
+    ====================================== -->
+
+    <section class="glass how-to">
+
+        <div class="how-title">
+            How To Play
+        </div>
+
+
+        <div class="instructions">
+
+
+            <div class="instruction">
+
+                <div class="instruction-icon">
+                    ⌨️
+                </div>
+
+                <h3>
+                    Learn The Keyboard
+                </h3>
+
+                <p>
+                    Every physical key produces
+                    a completely different letter.
+                </p>
+
+            </div>
+
+
+            <div class="instruction">
+
+                <div class="instruction-icon">
+                    🧠
+                </div>
+
+                <h3>
+                    Type Carefully
+                </h3>
+
+                <p>
+                    Your brain will slowly learn
+                    the cursed keyboard mapping.
+                </p>
+
+            </div>
+
+
+            <div class="instruction">
+
+                <div class="instruction-icon">
+                    🏆
+                </div>
+
+                <h3>
+                    Reach Level 2
+                </h3>
+
+                <p>
+                    Your objective is simple:
+                    somehow reach Level 2.
+                </p>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================
+         KEYBOARD PREVIEW
+    ====================================== -->
+
+    <section class="glass preview-card">
+
+        <div class="preview-title">
+            Just So You Know...
+        </div>
+
+        <div class="preview-subtitle">
+            This is NOT how your keyboard normally works.
+        </div>
+
+
+        <div class="mini-keyboard">
+
+
+            <div class="mini-key">
+                <strong>Q</strong>
+                <small>→ A</small>
+            </div>
+
+            <div class="mini-key">
+                <strong>W</strong>
+                <small>→ B</small>
+            </div>
+
+            <div class="mini-key">
+                <strong>E</strong>
+                <small>→ C</small>
+            </div>
+
+            <div class="mini-key">
+                <strong>R</strong>
+                <small>→ D</small>
+            </div>
+
+            <div class="mini-key">
+                <strong>T</strong>
+                <small>→ E</small>
+            </div>
+
+            <div class="mini-key">
+                <strong>Y</strong>
+                <small>→ F</small>
+            </div>
+
+            <div class="mini-key">
+                <strong>U</strong>
+                <small>→ G</small>
+            </div>
+
+            <div class="mini-key">
+                <strong>I</strong>
+                <small>→ H</small>
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================
+         FOOTER
+    ====================================== -->
+
+    <footer class="footer">
+
+        Made for absolutely no useful reason whatsoever.
+
+    </footer>
+
+
+</main>
+
+
+<script>
+
+/* =========================================
+   ELEMENTS
+========================================= */
+
+const themeBtn =
+    document.getElementById("themeBtn");
+
+const kidImage =
+    document.getElementById("kidImage");
+
+const loginForm =
+    document.getElementById("loginForm");
+
+const nameInput =
+    document.getElementById("name");
+
+const passwordInput =
+    document.getElementById("password");
+
+const errorMessage =
+    document.getElementById("errorMessage");
+
+
+/* =========================================
+   THEME
+========================================= */
+
+function loadTheme(){
+
+    const savedTheme =
+        localStorage.getItem(
+            "keyboardTheme"
+        );
+
+
+    if(savedTheme === "dark"){
+
+        document.body.classList.add(
+            "dark"
+        );
+
+        themeBtn.textContent =
+            "☀️";
+
+        kidImage.src =
+            "kid2.jpg";
+
+    }else{
+
+        document.body.classList.remove(
+            "dark"
+        );
+
+        themeBtn.textContent =
+            "🌙";
+
+        kidImage.src =
+            "kid1.jpg";
+
+    }
+
+}
+
+
+/* =========================================
+   TOGGLE THEME
+========================================= */
+
+themeBtn.addEventListener(
+    "click",
+    function(){
+
+        document.body.classList.toggle(
+            "dark"
+        );
+
+        const isDark =
+            document.body.classList.contains(
+                "dark"
+            );
+
+
+        if(isDark){
+
+            localStorage.setItem(
+                "keyboardTheme",
+                "dark"
+            );
+
+            themeBtn.textContent =
+                "☀️";
+
+            kidImage.src =
+                "kid2.jpg";
+
+        }else{
+
+            localStorage.setItem(
+                "keyboardTheme",
+                "light"
+            );
+
+            themeBtn.textContent =
+                "🌙";
+
+            kidImage.src =
+                "kid1.jpg";
+
+        }
+
+    }
+);
+
+
+/* =========================================
+   LOGIN
+========================================= */
+
+loginForm.addEventListener(
+    "submit",
+    function(event){
+
+        event.preventDefault();
+
+
+        const name =
+            nameInput.value.trim();
+
+        const password =
+            passwordInput.value.trim();
+
+
+        /* -----------------------------
+           VALIDATION
+        ----------------------------- */
+
+        if(
+            name === "" ||
+            password === ""
+        ){
+
+            errorMessage.textContent =
+                "Please enter your name and password.";
+
+            errorMessage.classList.remove(
+                "show"
+            );
+
+            void errorMessage.offsetWidth;
+
+            errorMessage.classList.add(
+                "show"
+            );
+
+            return;
+
+        }
+
+
+        /* -----------------------------
+           SAVE PLAYER NAME
+        ----------------------------- */
+
+        localStorage.setItem(
+            "playerName",
+            name
+        );
+
+
+        /*
+           Also save username for
+           compatibility with older code.
+        */
+
+        localStorage.setItem(
+            "username",
+            name
+        );
+
+
+        /* -----------------------------
+           SAVE LOGIN STATE
+        ----------------------------- */
+
+        localStorage.setItem(
+            "keyboardGameLoggedIn",
+            "true"
+        );
+
+
+        /* -----------------------------
+           START GAME
+        ----------------------------- */
+
+        window.location.href =
+            "levels.html";
+
+    }
+);
+
+
+/* =========================================
+   ENTER KEY
+========================================= */
+
+[nameInput,passwordInput].forEach(
+    input => {
+
+        input.addEventListener(
+            "keydown",
+            function(event){
+
+                if(event.key === "Enter"){
+
+                    loginForm.requestSubmit();
+
+                }
+
+            }
+        );
+
+    }
+);
+
+
+/* =========================================
+   INITIAL LOAD
+========================================= */
+
+loadTheme();
+
+</script>
+
+</body>
+</html>
