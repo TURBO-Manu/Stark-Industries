@@ -1,762 +1,1766 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0,
+               maximum-scale=1.0, user-scalable=no">
 
 <title>The Keyboard We All Wished For!!</title>
 
 <style>
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+
+/* =====================================================
+   RESET
+===================================================== */
 
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
 }
 
-:root{
-    --text:#111827;
-    --muted:#6b7280;
-    --card:rgba(255,255,255,0.58);
-    --card-border:rgba(255,255,255,0.72);
-    --key:rgba(255,255,255,0.72);
-    --key-border:rgba(255,255,255,0.9);
-    --accent:#6366f1;
-    --accent2:#8b5cf6;
-    --danger:#ef4444;
-    --shadow:0 25px 70px rgba(31,38,135,0.15);
-}
-
-body.dark{
-    --text:#f8fafc;
-    --muted:#a1a1aa;
-    --card:rgba(17,24,39,0.55);
-    --card-border:rgba(255,255,255,0.12);
-    --key:rgba(30,41,59,0.72);
-    --key-border:rgba(255,255,255,0.12);
-    --shadow:0 25px 70px rgba(0,0,0,0.4);
-}
-
-html,
-body{
+html{
     min-height:100%;
 }
 
 body{
+
+    min-height:100vh;
+
     font-family:'Inter',sans-serif;
+
     color:var(--text);
+
     overflow-x:hidden;
-    background:
-        radial-gradient(circle at 10% 20%, rgba(99,102,241,.28), transparent 30%),
-        radial-gradient(circle at 90% 20%, rgba(168,85,247,.25), transparent 30%),
-        radial-gradient(circle at 50% 100%, rgba(14,165,233,.2), transparent 35%),
-        linear-gradient(135deg,#eef2ff,#f8fafc,#ede9fe);
-    transition:background .5s ease,color .4s ease;
+
+    transition:
+        background .4s ease,
+        color .4s ease;
 }
+
+
+/* =====================================================
+   LIGHT THEME
+===================================================== */
+
+:root{
+
+    --text:#111827;
+    --muted:#6b7280;
+
+    --card:rgba(255,255,255,.58);
+
+    --card-border:
+        rgba(255,255,255,.75);
+
+    --key:
+        rgba(255,255,255,.75);
+
+    --key-border:
+        rgba(255,255,255,.9);
+
+    --accent:#6366f1;
+
+    --accent2:#8b5cf6;
+
+    --danger:#ef4444;
+
+    --success:#10b981;
+
+    --shadow:
+        0 25px 70px
+        rgba(31,38,135,.15);
+
+    --key-shadow:
+        0 7px 15px
+        rgba(0,0,0,.08);
+}
+
+
+/* =====================================================
+   DARK THEME
+===================================================== */
 
 body.dark{
-    background:
-        radial-gradient(circle at 10% 20%, rgba(79,70,229,.25), transparent 30%),
-        radial-gradient(circle at 90% 20%, rgba(124,58,237,.25), transparent 30%),
-        radial-gradient(circle at 50% 100%, rgba(8,145,178,.18), transparent 35%),
-        linear-gradient(135deg,#020617,#0f172a,#111827);
+
+    --text:#f8fafc;
+
+    --muted:#a1a1aa;
+
+    --card:
+        rgba(15,23,42,.60);
+
+    --card-border:
+        rgba(255,255,255,.12);
+
+    --key:
+        rgba(30,41,59,.82);
+
+    --key-border:
+        rgba(255,255,255,.12);
+
+    --shadow:
+        0 25px 70px
+        rgba(0,0,0,.45);
+
+    --key-shadow:
+        0 8px 20px
+        rgba(0,0,0,.30);
 }
 
-/* =========================
-   ANIMATED BACKGROUND
-========================= */
+
+/* =====================================================
+   BACKGROUND
+===================================================== */
+
+body{
+
+    background:
+
+        radial-gradient(
+            circle at 10% 20%,
+            rgba(99,102,241,.28),
+            transparent 30%
+        ),
+
+        radial-gradient(
+            circle at 90% 20%,
+            rgba(168,85,247,.25),
+            transparent 30%
+        ),
+
+        radial-gradient(
+            circle at 50% 100%,
+            rgba(14,165,233,.20),
+            transparent 35%
+        ),
+
+        linear-gradient(
+            135deg,
+            #eef2ff,
+            #f8fafc,
+            #ede9fe
+        );
+}
+
+
+body.dark{
+
+    background:
+
+        radial-gradient(
+            circle at 10% 20%,
+            rgba(79,70,229,.25),
+            transparent 30%
+        ),
+
+        radial-gradient(
+            circle at 90% 20%,
+            rgba(124,58,237,.25),
+            transparent 30%
+        ),
+
+        radial-gradient(
+            circle at 50% 100%,
+            rgba(8,145,178,.18),
+            transparent 35%
+        ),
+
+        linear-gradient(
+            135deg,
+            #020617,
+            #0f172a,
+            #111827
+        );
+}
+
+
+/* =====================================================
+   FLOATING BACKGROUND BLOBS
+===================================================== */
 
 .background{
+
     position:fixed;
+
     inset:0;
+
     overflow:hidden;
+
     pointer-events:none;
+
     z-index:-1;
 }
 
 .blob{
+
     position:absolute;
+
     border-radius:50%;
-    filter:blur(70px);
+
+    filter:blur(75px);
+
     opacity:.35;
-    animation:float 15s infinite alternate ease-in-out;
+
+    animation:
+        floatBlob
+        16s
+        infinite
+        alternate
+        ease-in-out;
 }
 
 .blob.one{
-    width:320px;
-    height:320px;
+
+    width:330px;
+    height:330px;
+
     background:#818cf8;
-    left:-80px;
-    top:80px;
+
+    top:50px;
+    left:-100px;
 }
 
 .blob.two{
-    width:380px;
-    height:380px;
+
+    width:390px;
+    height:390px;
+
     background:#c084fc;
-    right:-100px;
-    top:180px;
+
+    top:150px;
+    right:-120px;
+
     animation-delay:-5s;
 }
 
 .blob.three{
+
     width:300px;
     height:300px;
+
     background:#38bdf8;
+
+    bottom:-120px;
     left:40%;
-    bottom:-100px;
+
     animation-delay:-9s;
 }
 
-@keyframes float{
+@keyframes floatBlob{
+
     0%{
-        transform:translate(0,0) scale(1);
+        transform:
+            translate(0,0)
+            scale(1);
     }
+
     50%{
-        transform:translate(70px,-50px) scale(1.15);
+        transform:
+            translate(70px,-50px)
+            scale(1.12);
     }
+
     100%{
-        transform:translate(-50px,70px) scale(.95);
+        transform:
+            translate(-50px,70px)
+            scale(.95);
     }
 }
 
-/* =========================
-   MAIN
-========================= */
+
+/* =====================================================
+   MAIN PAGE
+===================================================== */
 
 .page{
+
     width:min(1450px,94%);
+
     margin:auto;
-    padding:30px 0 30px;
+
+    padding:
+        25px
+        0
+        35px;
 }
 
+
+/* =====================================================
+   TOP BAR
+===================================================== */
+
 .topbar{
+
     display:flex;
+
     align-items:center;
+
     justify-content:space-between;
+
     margin-bottom:25px;
 }
 
 .logo{
+
     font-family:'Space Grotesk',sans-serif;
+
     font-weight:800;
-    font-size:clamp(18px,2vw,26px);
+
+    font-size:
+        clamp(
+            17px,
+            2vw,
+            25px
+        );
+
+    letter-spacing:-.5px;
 }
 
 .theme-btn{
-    border:1px solid var(--card-border);
-    background:var(--card);
-    backdrop-filter:blur(20px);
-    -webkit-backdrop-filter:blur(20px);
+
     width:48px;
+
     height:48px;
+
     border-radius:15px;
+
+    border:
+        1px solid
+        var(--card-border);
+
+    background:
+        var(--card);
+
+    backdrop-filter:blur(20px);
+
+    -webkit-backdrop-filter:blur(20px);
+
+    box-shadow:
+        var(--shadow);
+
     cursor:pointer;
-    font-size:20px;
-    box-shadow:var(--shadow);
+
     color:var(--text);
-    transition:.3s;
+
+    font-size:20px;
+
+    transition:.25s;
 }
 
 .theme-btn:hover{
-    transform:translateY(-3px);
+
+    transform:
+        translateY(-2px);
 }
 
-/* =========================
+
+/* =====================================================
    HEADER
-========================= */
+===================================================== */
 
 .game-header{
+
     text-align:center;
-    margin-bottom:25px;
-}
 
-.game-header h1{
-    font-family:'Space Grotesk',sans-serif;
-    font-size:clamp(34px,5vw,62px);
-    font-weight:800;
-    letter-spacing:-2px;
-}
-
-.game-header p{
-    color:var(--muted);
-    margin-top:7px;
-    font-size:14px;
-}
-
-.level-info{
-    display:flex;
-    justify-content:center;
-    gap:15px;
-    flex-wrap:wrap;
-    margin-top:18px;
-}
-
-.info-pill{
-    padding:9px 17px;
-    border-radius:999px;
-    background:var(--card);
-    border:1px solid var(--card-border);
-    backdrop-filter:blur(18px);
-    font-size:13px;
-    font-weight:700;
-    box-shadow:var(--shadow);
-}
-
-#timer{
-    font-size:18px;
-    font-weight:900;
-    color:var(--accent);
-}
-
-#timer.warning{
-    color:var(--danger);
-    animation:pulse .7s infinite alternate;
-}
-
-@keyframes pulse{
-    from{transform:scale(1)}
-    to{transform:scale(1.08)}
-}
-
-/* =========================
-   GLASS CARD
-========================= */
-
-.glass{
-    background:var(--card);
-    border:1px solid var(--card-border);
-    backdrop-filter:blur(25px);
-    -webkit-backdrop-filter:blur(25px);
-    box-shadow:var(--shadow);
-    border-radius:28px;
-}
-
-/* =========================
-   TARGET
-========================= */
-
-.target-card{
-    padding:25px;
-    text-align:center;
-    margin-bottom:20px;
-}
-
-.small-label{
-    text-transform:uppercase;
-    font-size:11px;
-    font-weight:900;
-    letter-spacing:2px;
-    color:var(--muted);
-    margin-bottom:12px;
-}
-
-.target-text{
-    font-family:'Space Grotesk',sans-serif;
-    font-size:clamp(20px,3vw,36px);
-    font-weight:800;
-    letter-spacing:.5px;
-    word-break:break-word;
-}
-
-/* =========================
-   TYPED TEXT
-========================= */
-
-.typed-card{
-    padding:22px;
-    margin-bottom:25px;
-}
-
-.typed-text{
-    min-height:58px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-family:'Space Grotesk',sans-serif;
-    font-size:22px;
-    font-weight:700;
-    word-break:break-word;
-    text-align:center;
-}
-
-.cursor{
-    display:inline-block;
-    width:3px;
-    height:25px;
-    background:var(--accent);
-    margin-left:4px;
-    animation:blink .8s infinite;
-}
-
-@keyframes blink{
-    50%{opacity:0}
-}
-
-/* =========================
-   KEYBOARD
-========================= */
-
-.keyboard-card{
-    padding:25px;
-    margin-bottom:20px;
-}
-
-.keyboard-title{
-    text-align:center;
-    font-weight:900;
-    font-family:'Space Grotesk',sans-serif;
-    font-size:20px;
-    margin-bottom:6px;
-}
-
-.keyboard-subtitle{
-    text-align:center;
-    color:var(--muted);
-    font-size:12px;
     margin-bottom:22px;
 }
 
+.game-header h1{
+
+    font-family:'Space Grotesk',sans-serif;
+
+    font-size:
+        clamp(
+            36px,
+            6vw,
+            64px
+        );
+
+    font-weight:900;
+
+    letter-spacing:-3px;
+
+    line-height:1;
+}
+
+.game-header p{
+
+    color:var(--muted);
+
+    font-size:13px;
+
+    margin-top:9px;
+}
+
+.game-header p strong{
+
+    color:var(--accent);
+}
+
+
+/* =====================================================
+   INFO PILLS
+===================================================== */
+
+.level-info{
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:10px;
+
+    flex-wrap:wrap;
+
+    margin-top:17px;
+}
+
+.info-pill{
+
+    padding:
+        9px
+        16px;
+
+    border-radius:999px;
+
+    background:
+        var(--card);
+
+    border:
+        1px solid
+        var(--card-border);
+
+    backdrop-filter:blur(18px);
+
+    box-shadow:
+        var(--shadow);
+
+    font-size:12px;
+
+    font-weight:800;
+}
+
+#timer{
+
+    color:var(--accent);
+
+    font-size:17px;
+
+    font-weight:900;
+}
+
+#timer.warning{
+
+    color:var(--danger);
+
+    animation:
+        timerPulse
+        .7s
+        infinite
+        alternate;
+}
+
+@keyframes timerPulse{
+
+    from{
+        transform:scale(1);
+    }
+
+    to{
+        transform:scale(1.08);
+    }
+}
+
+
+/* =====================================================
+   GLASS
+===================================================== */
+
+.glass{
+
+    background:
+        var(--card);
+
+    border:
+        1px solid
+        var(--card-border);
+
+    backdrop-filter:
+        blur(25px);
+
+    -webkit-backdrop-filter:
+        blur(25px);
+
+    box-shadow:
+        var(--shadow);
+
+    border-radius:27px;
+}
+
+
+/* =====================================================
+   TARGET CARD
+===================================================== */
+
+.target-card{
+
+    padding:24px;
+
+    text-align:center;
+
+    margin-bottom:18px;
+}
+
+.small-label{
+
+    color:var(--muted);
+
+    font-size:10px;
+
+    font-weight:900;
+
+    text-transform:uppercase;
+
+    letter-spacing:2px;
+
+    margin-bottom:11px;
+}
+
+.target-text{
+
+    font-family:'Space Grotesk',sans-serif;
+
+    font-size:
+        clamp(
+            19px,
+            3vw,
+            34px
+        );
+
+    font-weight:800;
+
+    line-height:1.3;
+
+    word-break:break-word;
+}
+
+
+/* =====================================================
+   TYPED TEXT
+===================================================== */
+
+.typed-card{
+
+    padding:20px;
+
+    margin-bottom:18px;
+}
+
+.typed-text{
+
+    min-height:55px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    text-align:center;
+
+    word-break:break-word;
+
+    font-family:'Space Grotesk',sans-serif;
+
+    font-size:
+        clamp(
+            18px,
+            3vw,
+            24px
+        );
+
+    font-weight:700;
+}
+
+.cursor{
+
+    width:3px;
+
+    height:25px;
+
+    background:
+        var(--accent);
+
+    margin-left:4px;
+
+    animation:
+        blink
+        .8s
+        infinite;
+}
+
+@keyframes blink{
+
+    50%{
+        opacity:0;
+    }
+}
+
+
+/* =====================================================
+   KEYBOARD CARD
+===================================================== */
+
+.keyboard-card{
+
+    padding:
+        22px
+        20px
+        25px;
+
+    margin-bottom:18px;
+
+    overflow:hidden;
+}
+
+.keyboard-title{
+
+    text-align:center;
+
+    font-family:'Space Grotesk',sans-serif;
+
+    font-size:21px;
+
+    font-weight:900;
+}
+
+.keyboard-subtitle{
+
+    text-align:center;
+
+    color:var(--muted);
+
+    font-size:11px;
+
+    margin-top:5px;
+
+    margin-bottom:20px;
+}
+
+
+/* =====================================================
+   DESKTOP KEYBOARD
+===================================================== */
+
 .keyboard{
-    display:grid;
-    grid-template-columns:repeat(10,1fr);
-    gap:9px;
+
+    width:100%;
+
     max-width:1050px;
+
     margin:auto;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:8px;
+}
+
+.key-row{
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:8px;
 }
 
 .key{
-    position:relative;
-    min-height:76px;
-    padding:8px;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
+
+    flex:
+        1
+        1
+        0;
+
+    max-width:82px;
+
+    min-width:50px;
+
+    height:76px;
+
     border-radius:16px;
-    background:var(--key);
-    border:1px solid var(--key-border);
+
+    background:
+        var(--key);
+
+    border:
+        1px solid
+        var(--key-border);
+
     box-shadow:
-        0 7px 15px rgba(0,0,0,.08),
-        inset 0 1px 0 rgba(255,255,255,.5);
-    transition:.15s;
+        var(--key-shadow);
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    justify-content:center;
+
+    cursor:pointer;
+
+    user-select:none;
+
+    -webkit-user-select:none;
+
+    touch-action:manipulation;
+
+    transition:
+        transform .12s,
+        background .15s,
+        box-shadow .15s;
 }
 
 .key .physical{
+
+    font-family:'Space Grotesk',sans-serif;
+
     font-size:18px;
+
     font-weight:900;
 }
 
 .key .arrow{
-    font-size:12px;
+
     color:var(--muted);
-    margin:2px 0;
+
+    font-size:10px;
+
+    margin:
+        2px
+        0;
 }
 
 .key .output{
-    font-size:13px;
-    font-weight:800;
+
     color:var(--accent);
+
+    font-size:12px;
+
+    font-weight:900;
+}
+
+.key:active{
+
+    transform:
+        translateY(3px)
+        scale(.96);
 }
 
 .key.correct{
-    transform:translateY(-7px) scale(1.05);
-    box-shadow:0 12px 25px rgba(99,102,241,.25);
+
+    transform:
+        translateY(-5px)
+        scale(1.04);
+
+    box-shadow:
+        0 12px 28px
+        rgba(99,102,241,.28);
+
+    background:
+        rgba(99,102,241,.13);
 }
 
 .key.wrong{
-    animation:keyWrong .3s;
-    border-color:var(--danger);
+
+    animation:
+        keyWrong
+        .3s;
 }
 
 @keyframes keyWrong{
-    0%,100%{transform:translateX(0)}
-    25%{transform:translateX(-7px)}
-    75%{transform:translateX(7px)}
+
+    0%,100%{
+        transform:translateX(0);
+    }
+
+    25%{
+        transform:translateX(-6px);
+    }
+
+    75%{
+        transform:translateX(6px);
+    }
 }
 
-/* =========================
+
+/* =====================================================
+   SPACE / BACKSPACE
+===================================================== */
+
+.special-row{
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:10px;
+
+    margin-top:13px;
+}
+
+.special-key{
+
+    height:52px;
+
+    border-radius:14px;
+
+    border:
+        1px solid
+        var(--key-border);
+
+    background:
+        var(--key);
+
+    box-shadow:
+        var(--key-shadow);
+
+    color:var(--text);
+
+    font-size:11px;
+
+    font-weight:900;
+
+    cursor:pointer;
+
+    touch-action:manipulation;
+
+    user-select:none;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    transition:.12s;
+}
+
+.space-key{
+
+    width:min(420px,65%);
+}
+
+.backspace-key{
+
+    width:110px;
+}
+
+.special-key:active{
+
+    transform:
+        translateY(3px)
+        scale(.97);
+}
+
+
+/* =====================================================
+   MOBILE KEYBOARD
+===================================================== */
+
+@media(max-width:650px){
+
+    .page{
+
+        width:96%;
+
+        padding-top:15px;
+    }
+
+    .topbar{
+
+        margin-bottom:20px;
+    }
+
+    .game-header h1{
+
+        font-size:
+            clamp(
+                34px,
+                10vw,
+                50px
+            );
+
+        letter-spacing:-2px;
+    }
+
+    .game-header p{
+
+        font-size:11px;
+    }
+
+    .target-card{
+
+        padding:18px 13px;
+
+        border-radius:22px;
+    }
+
+    .typed-card{
+
+        padding:14px 10px;
+
+        border-radius:22px;
+    }
+
+    .keyboard-card{
+
+        padding:
+            18px
+            7px
+            18px;
+
+        border-radius:22px;
+    }
+
+    .keyboard-subtitle{
+
+        margin-bottom:15px;
+    }
+
+    .keyboard{
+
+        gap:6px;
+
+        width:100%;
+    }
+
+    .key-row{
+
+        gap:4px;
+
+        width:100%;
+    }
+
+    .key{
+
+        height:
+            clamp(
+                54px,
+                14vw,
+                68px
+            );
+
+        min-width:0;
+
+        max-width:none;
+
+        border-radius:10px;
+    }
+
+    .key .physical{
+
+        font-size:
+            clamp(
+                14px,
+                4vw,
+                18px
+            );
+    }
+
+    .key .arrow{
+
+        font-size:8px;
+
+        margin:1px 0;
+    }
+
+    .key .output{
+
+        font-size:
+            clamp(
+                9px,
+                2.8vw,
+                12px
+            );
+    }
+
+    .special-row{
+
+        gap:6px;
+
+        margin-top:8px;
+    }
+
+    .special-key{
+
+        height:48px;
+
+        border-radius:11px;
+
+        font-size:10px;
+    }
+
+    .space-key{
+
+        width:62%;
+    }
+
+    .backspace-key{
+
+        width:30%;
+    }
+}
+
+
+/* =====================================================
+   VERY SMALL PHONES
+===================================================== */
+
+@media(max-width:380px){
+
+    .key{
+
+        height:51px;
+
+        border-radius:8px;
+    }
+
+    .key-row{
+
+        gap:3px;
+    }
+
+    .keyboard-card{
+
+        padding-left:4px;
+        padding-right:4px;
+    }
+}
+
+
+/* =====================================================
    STATS
-========================= */
+===================================================== */
 
 .stats{
+
     display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:15px;
-    margin-bottom:20px;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:12px;
+
+    margin-bottom:18px;
 }
 
 .stat{
-    padding:18px;
+
+    padding:17px;
+
     text-align:center;
 }
 
 .stat-value{
+
     font-family:'Space Grotesk',sans-serif;
-    font-size:28px;
+
+    font-size:26px;
+
     font-weight:900;
 }
 
 .stat-label{
-    font-size:11px;
+
+    margin-top:3px;
+
     color:var(--muted);
+
+    font-size:9px;
+
+    font-weight:900;
+
     text-transform:uppercase;
+
     letter-spacing:1px;
-    margin-top:4px;
 }
 
-/* =========================
+
+/* =====================================================
    PROGRESS
-========================= */
+===================================================== */
 
 .progress-card{
-    padding:22px;
-    margin-bottom:20px;
+
+    padding:20px;
+
+    margin-bottom:13px;
 }
 
 .progress-header{
+
     display:flex;
+
     justify-content:space-between;
-    gap:15px;
-    font-size:13px;
+
+    gap:10px;
+
+    font-size:11px;
+
     font-weight:800;
-    margin-bottom:10px;
+
+    margin-bottom:9px;
 }
 
 .progress-track{
+
+    height:12px;
+
     width:100%;
-    height:13px;
-    background:rgba(0,0,0,.08);
+
     border-radius:999px;
+
     overflow:hidden;
+
+    background:
+        rgba(0,0,0,.08);
 }
 
 body.dark .progress-track{
-    background:rgba(255,255,255,.08);
+
+    background:
+        rgba(255,255,255,.08);
 }
 
 .progress-fill{
+
     height:100%;
+
     width:0%;
+
     border-radius:999px;
-    background:linear-gradient(90deg,var(--accent),var(--accent2));
-    transition:width .3s ease;
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--accent),
+            var(--accent2)
+        );
+
+    transition:
+        width .25s ease;
 }
 
-/* =========================
+
+/* =====================================================
    MESSAGE
-========================= */
+===================================================== */
 
 .message{
-    min-height:25px;
+
+    min-height:24px;
+
     text-align:center;
-    font-weight:800;
+
     color:var(--accent);
-    margin:15px 0 25px;
+
+    font-size:12px;
+
+    font-weight:800;
+
+    margin:
+        8px
+        0
+        13px;
 }
 
-/* =========================
-   QUIT
-========================= */
+
+/* =====================================================
+   QUIT BUTTON
+===================================================== */
 
 .quit-area{
+
     display:flex;
+
     justify-content:center;
-    padding:10px 0 15px;
+
+    padding:
+        5px
+        0
+        10px;
 }
 
 .quit-btn{
-    border:1px solid rgba(239,68,68,.25);
-    background:rgba(239,68,68,.08);
+
+    border:
+        1px solid
+        rgba(239,68,68,.25);
+
+    background:
+        rgba(239,68,68,.08);
+
     color:#dc2626;
-    padding:13px 28px;
+
+    padding:
+        13px
+        28px;
+
     border-radius:14px;
-    font-size:13px;
+
+    font-size:12px;
+
     font-weight:900;
-    letter-spacing:.5px;
+
     cursor:pointer;
+
+    touch-action:manipulation;
+
     transition:.25s;
 }
 
-.quit-btn:hover{
-    background:rgba(239,68,68,.16);
-    transform:translateY(-2px);
+.quit-btn:active{
+
+    transform:
+        scale(.96);
 }
 
 body.dark .quit-btn{
+
     color:#f87171;
 }
 
-/* =========================
+
+/* =====================================================
    OVERLAYS
-========================= */
+===================================================== */
 
 .overlay{
+
     position:fixed;
+
     inset:0;
+
     display:none;
+
     align-items:center;
+
     justify-content:center;
-    padding:25px;
-    background:rgba(2,6,23,.45);
-    backdrop-filter:blur(15px);
+
+    padding:18px;
+
+    background:
+        rgba(2,6,23,.48);
+
+    backdrop-filter:
+        blur(15px);
+
+    -webkit-backdrop-filter:
+        blur(15px);
+
     z-index:100;
 }
 
 .overlay.show{
+
     display:flex;
 }
 
 .modal{
+
     width:min(600px,100%);
-    padding:40px;
+
+    padding:
+        35px
+        25px;
+
+    border-radius:28px;
+
+    background:
+        var(--card);
+
+    border:
+        1px solid
+        var(--card-border);
+
+    backdrop-filter:
+        blur(30px);
+
+    -webkit-backdrop-filter:
+        blur(30px);
+
+    box-shadow:
+        0 35px 100px
+        rgba(0,0,0,.25);
+
     text-align:center;
-    border-radius:32px;
-    background:var(--card);
-    border:1px solid var(--card-border);
-    backdrop-filter:blur(30px);
-    box-shadow:0 35px 100px rgba(0,0,0,.25);
 }
 
 .modal-icon{
-    font-size:55px;
-    margin-bottom:15px;
+
+    font-size:50px;
+
+    margin-bottom:12px;
 }
 
 .modal h2{
+
     font-family:'Space Grotesk',sans-serif;
-    font-size:clamp(28px,5vw,44px);
+
+    font-size:
+        clamp(
+            28px,
+            7vw,
+            45px
+        );
+
+    font-weight:900;
+
     margin-bottom:10px;
 }
 
 .modal p{
+
     color:var(--muted);
+
     line-height:1.6;
-    margin-bottom:25px;
+
+    font-size:13px;
+
+    margin-bottom:22px;
 }
 
 .primary-btn{
+
     border:none;
-    padding:15px 25px;
+
+    padding:
+        15px
+        25px;
+
     border-radius:15px;
+
     color:white;
-    background:linear-gradient(135deg,var(--accent),var(--accent2));
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--accent),
+            var(--accent2)
+        );
+
     font-weight:900;
+
     cursor:pointer;
+
+    touch-action:manipulation;
+
     transition:.25s;
 }
 
-.primary-btn:hover{
-    transform:translateY(-3px);
-    box-shadow:0 15px 30px rgba(99,102,241,.3);
+.primary-btn:active{
+
+    transform:
+        scale(.97);
 }
 
-/* =========================
+
+/* =====================================================
+   LOADING
+===================================================== */
+
+.loading-bar{
+
+    margin-top:15px;
+}
+
+
+/* =====================================================
    QUIT PAGE
-========================= */
+===================================================== */
 
 .quit-page{
+
     width:min(850px,100%);
-    text-align:center;
 }
 
-.quit-page .modal{
+.quit-modal{
+
     width:100%;
+
+    padding:
+        35px
+        25px;
 }
 
 .quit-title{
+
     font-family:'Space Grotesk',sans-serif;
-    font-size:clamp(38px,7vw,75px);
+
+    font-size:
+        clamp(
+            43px,
+            11vw,
+            75px
+        );
+
     font-weight:900;
-    letter-spacing:-3px;
+
+    letter-spacing:-4px;
+
+    line-height:1;
+
     margin-bottom:8px;
 }
 
 .quit-subtitle{
+
     color:var(--muted);
-    margin-bottom:30px;
+
+    font-size:13px;
 }
 
 .regret{
-    font-size:clamp(22px,4vw,38px);
-    font-weight:900;
-    line-height:1.25;
-    margin:25px auto;
+
     max-width:700px;
+
+    margin:
+        25px auto;
+
+    font-family:'Space Grotesk',sans-serif;
+
+    font-size:
+        clamp(
+            22px,
+            5vw,
+            38px
+        );
+
+    font-weight:900;
+
+    line-height:1.25;
 }
 
 .regret span{
+
     color:var(--accent);
 }
 
 .wasted-time{
-    margin:25px auto;
-    padding:25px;
+
+    padding:23px;
+
+    margin:
+        20px auto;
+
     border-radius:22px;
-    background:rgba(99,102,241,.08);
-    border:1px solid rgba(99,102,241,.15);
+
+    background:
+        rgba(99,102,241,.08);
+
+    border:
+        1px solid
+        rgba(99,102,241,.15);
 }
 
 .wasted-label{
-    font-size:11px;
-    font-weight:900;
-    text-transform:uppercase;
-    letter-spacing:2px;
+
     color:var(--muted);
+
+    font-size:10px;
+
+    font-weight:900;
+
+    text-transform:uppercase;
+
+    letter-spacing:2px;
 }
 
 .wasted-value{
+
+    margin-top:5px;
+
     font-family:'Space Grotesk',sans-serif;
-    font-size:clamp(38px,7vw,65px);
-    font-weight:900;
+
     color:var(--accent);
-    margin-top:6px;
+
+    font-size:
+        clamp(
+            40px,
+            10vw,
+            65px
+        );
+
+    font-weight:900;
 }
 
 .quit-stats{
+
     display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:12px;
-    margin:20px 0 30px;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:10px;
+
+    margin:
+        18px
+        0
+        25px;
 }
 
 .quit-stat{
-    padding:16px;
-    border-radius:18px;
-    background:rgba(255,255,255,.22);
-    border:1px solid var(--card-border);
+
+    padding:15px;
+
+    border-radius:17px;
+
+    background:
+        rgba(255,255,255,.20);
+
+    border:
+        1px solid
+        var(--card-border);
 }
 
 body.dark .quit-stat{
-    background:rgba(255,255,255,.04);
+
+    background:
+        rgba(255,255,255,.035);
 }
 
 .quit-stat strong{
+
     display:block;
-    font-size:24px;
+
     font-family:'Space Grotesk',sans-serif;
+
+    font-size:23px;
+
+    font-weight:900;
 }
 
 .quit-stat span{
-    font-size:10px;
+
     color:var(--muted);
+
+    font-size:9px;
+
     text-transform:uppercase;
+
     letter-spacing:1px;
 }
 
-/* =========================
+
+/* =====================================================
    SHAKE
-========================= */
+===================================================== */
 
 body.shake{
-    animation:screenShake .3s;
+
+    animation:
+        screenShake
+        .3s;
 }
 
 @keyframes screenShake{
-    0%,100%{transform:translateX(0)}
-    20%{transform:translateX(-8px)}
-    40%{transform:translateX(8px)}
-    60%{transform:translateX(-6px)}
-    80%{transform:translateX(6px)}
+
+    0%,100%{
+        transform:translateX(0);
+    }
+
+    20%{
+        transform:translateX(-7px);
+    }
+
+    40%{
+        transform:translateX(7px);
+    }
+
+    60%{
+        transform:translateX(-5px);
+    }
+
+    80%{
+        transform:translateX(5px);
+    }
 }
 
-/* =========================
-   RESPONSIVE
-========================= */
 
-@media(max-width:900px){
-    .keyboard{
-        grid-template-columns:repeat(7,1fr);
+/* =====================================================
+   MOBILE STATS
+===================================================== */
+
+@media(max-width:500px){
+
+    .stats{
+
+        gap:7px;
     }
 
-    .key{
-        min-height:68px;
-    }
-}
+    .stat{
 
-@media(max-width:600px){
-    .page{
-        width:94%;
-        padding-top:20px;
+        padding:13px 5px;
     }
 
-    .keyboard{
-        grid-template-columns:repeat(5,1fr);
+    .stat-value{
+
+        font-size:21px;
     }
 
-    .key{
-        min-height:60px;
+    .stat-label{
+
+        font-size:8px;
     }
 
-    .key .physical{
-        font-size:15px;
+    .progress-card{
+
+        padding:16px;
     }
 
-    .key .output{
-        font-size:11px;
+    .progress-header{
+
+        font-size:9px;
     }
 
-    .stats,
     .quit-stats{
-        grid-template-columns:1fr;
+
+        grid-template-columns:
+            1fr;
+
+        gap:7px;
+    }
+
+    .quit-stat{
+
+        padding:11px;
+    }
+
+    .quit-stat strong{
+
+        font-size:20px;
+    }
+
+    .quit-modal{
+
+        padding:
+            28px
+            16px;
     }
 
     .modal{
-        padding:28px 20px;
+
+        padding:
+            28px
+            18px;
     }
 }
+
 </style>
 </head>
 
+
 <body>
 
+
+<!-- =====================================================
+     BACKGROUND
+===================================================== -->
+
 <div class="background">
+
     <div class="blob one"></div>
+
     <div class="blob two"></div>
+
     <div class="blob three"></div>
+
 </div>
 
-<!-- =========================
+
+<!-- =====================================================
      GAME PAGE
-========================= -->
+===================================================== -->
 
 <main class="page" id="gamePage">
 
+
+    <!-- TOP BAR -->
+
     <div class="topbar">
+
         <div class="logo">
             The Keyboard We All Wished For!!
         </div>
 
-        <button class="theme-btn" id="themeBtn">🌙</button>
+        <button
+            class="theme-btn"
+            id="themeBtn"
+            aria-label="Toggle theme">
+
+            🌙
+
+        </button>
+
     </div>
+
+
+    <!-- HEADER -->
 
     <header class="game-header">
 
-        <h1 id="levelTitle">LEVEL 1</h1>
+        <h1 id="levelTitle">
+            LEVEL 1
+        </h1>
 
         <p>
-            Welcome, <strong id="playerName">PLAYER</strong>.
+            Welcome,
+            <strong id="playerName">
+                PLAYER
+            </strong>.
             Good luck. You're going to need it.
         </p>
+
 
         <div class="level-info">
 
             <div class="info-pill">
+
                 LEVEL:
-                <span id="currentLevelDisplay">1</span>
+                <span id="currentLevelDisplay">
+                    1
+                </span>
+
             </div>
 
+
             <div class="info-pill">
+
                 TIME:
-                <span id="timer">10:00</span>
+                <span id="timer">
+                    10:00
+                </span>
+
             </div>
 
         </div>
 
     </header>
 
-    <!-- TARGET -->
+
+    <!-- =================================================
+         TARGET
+    ================================================== -->
 
     <section class="glass target-card">
 
@@ -764,13 +1768,17 @@ body.shake{
             Type this sentence
         </div>
 
-        <div class="target-text" id="targetText">
-            PLAYER LOVE THIS GAME
+        <div
+            class="target-text"
+            id="targetText">
         </div>
 
     </section>
 
-    <!-- TYPED -->
+
+    <!-- =================================================
+         TYPED
+    ================================================== -->
 
     <section class="glass typed-card">
 
@@ -779,98 +1787,494 @@ body.shake{
         </div>
 
         <div class="typed-text">
+
             <span id="typedText"></span>
+
             <span class="cursor"></span>
+
         </div>
 
     </section>
 
-    <!-- KEYBOARD -->
+
+    <!-- =================================================
+         KEYBOARD
+    ================================================== -->
 
     <section class="glass keyboard-card">
 
         <div class="keyboard-title">
-            The Keyboard
+            The Cursed Keyboard
         </div>
 
         <div class="keyboard-subtitle">
-            Physical key → Letter produced
+
+            Tap a key on your phone —
+            or use your physical keyboard
+
         </div>
 
-        <div class="keyboard" id="keyboard"></div>
+
+        <!-- ROW 1 -->
+
+        <div class="keyboard" id="keyboard">
+
+            <div class="key-row">
+
+                <button class="key"
+                        data-key="q">
+
+                    <span class="physical">Q</span>
+                    <span class="arrow">↓</span>
+                    <span class="output">A</span>
+
+                </button>
+
+
+                <button class="key"
+                        data-key="w">
+
+                    <span class="physical">W</span>
+                    <span class="arrow">↓</span>
+                    <span class="output">B</span>
+
+                </button>
+
+
+                <button class="key"
+                        data-key="e">
+
+                    <span class="physical">E</span>
+                    <span class="arrow">↓</span>
+                    <span class="output">C</span>
+
+                </button>
+
+
+                <button class="key"
+                        data-key="r">
+
+                    <span class="physical">R</span>
+                    <span class="arrow">↓</span>
+                    <span class="output">D</span>
+
+                </button>
+
+
+                <button class="key"
+                        data-key="t">
+
+                    <span class="physical">T</span>
+                    <span class="arrow">↓</span>
+                    <span class="output">E</span>
+
+                </button>
+
+
+                <button class="key"
+                        data-key="y">
+
+                    <span class="physical">Y</span>
+                    <span class="arrow">↓</span>
+                    <span class="output">F</span>
+
+                </button>
+
+
+                <button class="key"
+                        data-key="u">
+
+                    <span class="physical">U</span>
+                    <span class="arrow">↓</span>
+                    <span class="output">G</span>
+
+                </button>
+
+
+                <button class="key"
+                        data-key="i">
+
+                    <span class="physical">I</span>
+                    <span class="arrow">↓</span>
+                    <span class="output">H</span>
+
+                </button>
+
+
+                <button class="key"
+                        data-key="o">
+
+                    <span class="physical">O</span>
+                    <span class="arrow">↓</span>
+                    <span class="output">I</span>
+
+                </button>
+
+
+                <button class="key"
+                        data-key="p">
+
+                    <span class="physical">P</span>
+                    <span class="arrow">↓</span>
+                    <span class="output">J</span>
+
+                </button>
+
+            </div>
+
+
+            <!-- ROW 2 -->
+
+            <div class="key-row">
+
+                <button class="key"
+                        data-key="a">
+
+                    <span class="physical">A</span>
+                    <span class="arrow">↓</span>
+                    <span class="output">K</span>
+
+                </button>
+
+
+                <button class="key"
+                        data-key="s">
+
+                    <span class="physical">S</span>
+                    <span class="arrow">↓</span>
+                    <span class="output">L</span>
+
+                </button>
+
+
+                <button class="key"
+                        data-key="d">
+
+                    <span class="physical">D</span>
+                    <span class="arrow">↓</span>
+                    <span class="output">M</span>
+
+                </button>
+
+
+                <button class="key"
+                        data-key="f">
+
+                    <span class="physical">F</span>
+                    <span class="arrow">↓</span>
+                    <span class="output">N</span>
+
+                </button>
+
+
+                <button class="key"
+                        data-key="g">
+
+                    <span class="physical">G</span>
+                    <span class="arrow">↓</span>
+                    <span class="output">O</span>
+
+                </button>
+
+
+                <button class="key"
+                        data-key="h">
+
+                    <span class="physical">H</span>
+                    <span class="arrow">↓</span>
+                    <span class="output">P</span>
+
+                </button>
+
+
+                <button class="key"
+                        data-key="j">
+
+                    <span class="physical">J</span>
+                    <span class="arrow">↓</span>
+                    <span class="output">Q</span>
+
+                </button>
+
+
+                <button class="key"
+                        data-key="k">
+
+                    <span class="physical">K</span>
+                    <span class="arrow">↓</span>
+                    <span class="output">R</span>
+
+                </button>
+
+
+                <button class="key"
+                        data-key="l">
+
+                    <span class="physical">L</span>
+                    <span class="arrow">↓</span>
+                    <span class="output">S</span>
+
+                </button>
+
+            </div>
+
+
+            <!-- ROW 3 -->
+
+            <div class="key-row">
+
+                <button class="key"
+                        data-key="z">
+
+                    <span class="physical">Z</span>
+                    <span class="arrow">↓</span>
+                    <span class="output">T</span>
+
+                </button>
+
+
+                <button class="key"
+                        data-key="x">
+
+                    <span class="physical">X</span>
+                    <span class="arrow">↓</span>
+                    <span class="output">U</span>
+
+                </button>
+
+
+                <button class="key"
+                        data-key="c">
+
+                    <span class="physical">C</span>
+                    <span class="arrow">↓</span>
+                    <span class="output">V</span>
+
+                </button>
+
+
+                <button class="key"
+                        data-key="v">
+
+                    <span class="physical">V</span>
+                    <span class="arrow">↓</span>
+                    <span class="output">W</span>
+
+                </button>
+
+
+                <button class="key"
+                        data-key="b">
+
+                    <span class="physical">B</span>
+                    <span class="arrow">↓</span>
+                    <span class="output">X</span>
+
+                </button>
+
+
+                <button class="key"
+                        data-key="n">
+
+                    <span class="physical">N</span>
+                    <span class="arrow">↓</span>
+                    <span class="output">Y</span>
+
+                </button>
+
+
+                <button class="key"
+                        data-key="m">
+
+                    <span class="physical">M</span>
+                    <span class="arrow">↓</span>
+                    <span class="output">Z</span>
+
+                </button>
+
+            </div>
+
+
+            <!-- SPECIAL KEYS -->
+
+            <div class="special-row">
+
+                <button
+                    class="special-key space-key"
+                    id="spaceKey">
+
+                    SPACE
+
+                </button>
+
+
+                <button
+                    class="special-key backspace-key"
+                    id="backspaceKey">
+
+                    ⌫ DELETE
+
+                </button>
+
+            </div>
+
+        </div>
 
     </section>
 
-    <!-- STATS -->
+
+    <!-- =================================================
+         STATS
+    ================================================== -->
 
     <section class="stats">
 
         <div class="glass stat">
-            <div class="stat-value" id="mistakes">0</div>
-            <div class="stat-label">Mistakes</div>
+
+            <div
+                class="stat-value"
+                id="mistakes">
+
+                0
+
+            </div>
+
+            <div class="stat-label">
+                Mistakes
+            </div>
+
         </div>
 
-        <div class="glass stat">
-            <div class="stat-value" id="keysPressed">0</div>
-            <div class="stat-label">Keys Pressed</div>
-        </div>
 
         <div class="glass stat">
-            <div class="stat-value" id="progressPercent">0%</div>
-            <div class="stat-label">Progress</div>
+
+            <div
+                class="stat-value"
+                id="keysPressed">
+
+                0
+
+            </div>
+
+            <div class="stat-label">
+                Keys Pressed
+            </div>
+
+        </div>
+
+
+        <div class="glass stat">
+
+            <div
+                class="stat-value"
+                id="progressPercent">
+
+                0%
+
+            </div>
+
+            <div class="stat-label">
+                Progress
+            </div>
+
         </div>
 
     </section>
 
-    <!-- PROGRESS -->
+
+    <!-- =================================================
+         LEVEL PROGRESS
+    ================================================== -->
 
     <section class="glass progress-card">
 
         <div class="progress-header">
-            <span>Distance to Level 2</span>
-            <span id="distanceText">99.99% remaining</span>
+
+            <span>
+                Distance to Level 2
+            </span>
+
+            <span id="distanceText">
+                0% complete
+            </span>
+
         </div>
 
+
         <div class="progress-track">
-            <div class="progress-fill" id="progressFill"></div>
+
+            <div
+                class="progress-fill"
+                id="progressFill">
+            </div>
+
         </div>
 
     </section>
 
-    <div class="message" id="message">
+
+    <!-- MESSAGE -->
+
+    <div
+        class="message"
+        id="message">
+
         This should be easy...
+
     </div>
 
-    <!-- QUIT -->
+
+    <!-- =================================================
+         QUIT
+    ================================================== -->
 
     <div class="quit-area">
-        <button class="quit-btn" id="quitBtn">
+
+        <button
+            class="quit-btn"
+            id="quitBtn">
+
             ✕ QUIT GAME
+
         </button>
+
     </div>
+
 
 </main>
 
 
-<!-- =========================
-     SUCCESS OVERLAY
-========================= -->
+<!-- =====================================================
+     LEVEL COMPLETE
+===================================================== -->
 
-<div class="overlay" id="successOverlay">
+<div
+    class="overlay"
+    id="successOverlay">
 
     <div class="modal">
 
-        <div class="modal-icon">🎉</div>
+        <div class="modal-icon">
+            🎉
+        </div>
 
-        <h2>LEVEL COMPLETE!</h2>
+        <h2>
+            LEVEL COMPLETE!
+        </h2>
 
         <p>
-            Incredible. Somehow you survived that level.
-            Surely Level 2 is next...
+            Somehow you actually completed
+            this level.
+            <br>
+            Surely Level 2 comes next...
         </p>
 
-        <button class="primary-btn" id="nextLevelBtn">
+        <button
+            class="primary-btn"
+            id="nextLevelBtn">
+
             PREPARE FOR LEVEL 2
+
         </button>
 
     </div>
@@ -878,24 +2282,35 @@ body.shake{
 </div>
 
 
-<!-- =========================
-     LOADING OVERLAY
-========================= -->
+<!-- =====================================================
+     LOADING
+===================================================== -->
 
-<div class="overlay" id="loadingOverlay">
+<div
+    class="overlay"
+    id="loadingOverlay">
 
     <div class="modal">
 
-        <div class="modal-icon">⚙️</div>
+        <div class="modal-icon">
+            ⚙️
+        </div>
 
-        <h2>PREPARING LEVEL 2...</h2>
+        <h2>
+            PREPARING LEVEL 2...
+        </h2>
 
         <p id="loadingMessage">
             Calculating your progress...
         </p>
 
-        <div class="progress-track">
-            <div class="progress-fill" id="loadingFill"></div>
+        <div class="progress-track loading-bar">
+
+            <div
+                class="progress-fill"
+                id="loadingFill">
+            </div>
+
         </div>
 
     </div>
@@ -903,25 +2318,36 @@ body.shake{
 </div>
 
 
-<!-- =========================
-     GAME OVER OVERLAY
-========================= -->
+<!-- =====================================================
+     GAME OVER
+===================================================== -->
 
-<div class="overlay" id="gameOverOverlay">
+<div
+    class="overlay"
+    id="gameOverOverlay">
 
     <div class="modal">
 
-        <div class="modal-icon">💀</div>
+        <div class="modal-icon">
+            💀
+        </div>
 
-        <h2>TIME'S UP!</h2>
+        <h2>
+            TIME'S UP!
+        </h2>
 
         <p>
-            Ten minutes of your life have disappeared.
-            And Level 2 is still waiting somewhere...
+            Ten minutes have disappeared.
+            <br>
+            Level 2 remains undefeated.
         </p>
 
-        <button class="primary-btn" onclick="location.reload()">
+        <button
+            class="primary-btn"
+            id="retryBtn">
+
             TRY AGAIN
+
         </button>
 
     </div>
@@ -929,72 +2355,132 @@ body.shake{
 </div>
 
 
-<!-- =========================
+<!-- =====================================================
      QUIT PAGE
      INSIDE LEVELS.HTML
-========================= -->
+===================================================== -->
 
-<div class="overlay" id="quitPage">
+<div
+    class="overlay"
+    id="quitPage">
 
     <div class="quit-page">
 
-        <div class="modal">
+        <div class="modal quit-modal">
 
             <div class="modal-icon">
                 🪦
             </div>
 
+
             <div class="quit-title">
                 YOU QUIT.
             </div>
 
+
             <div class="quit-subtitle">
-                Honestly... probably for the best.
+                The keyboard wins this round.
             </div>
 
+
             <div class="regret">
+
                 I knew it that you wouldn't
-                <span>make it to Level 2.</span>
+                <span>
+                    make it to Level 2.
+                </span>
+
             </div>
+
+
+            <!-- TOTAL TIME -->
 
             <div class="wasted-time">
 
                 <div class="wasted-label">
-                    Total time you wasted playing this game
+
+                    Total time you wasted
+                    playing this game
+
                 </div>
 
-                <div class="wasted-value" id="totalWastedTime">
+
+                <div
+                    class="wasted-value"
+                    id="totalWastedTime">
+
                     00:00
+
                 </div>
 
             </div>
+
+
+            <!-- STATS -->
 
             <div class="quit-stats">
 
-                <div class="quit-stat">
-                    <strong id="quitLevel">1</strong>
-                    <span>Highest Level</span>
-                </div>
 
                 <div class="quit-stat">
-                    <strong id="quitKeys">0</strong>
-                    <span>Keys Pressed</span>
+
+                    <strong id="quitLevel">
+                        1
+                    </strong>
+
+                    <span>
+                        Highest Level
+                    </span>
+
                 </div>
 
+
                 <div class="quit-stat">
-                    <strong id="quitMistakes">0</strong>
-                    <span>Mistakes</span>
+
+                    <strong id="quitKeys">
+                        0
+                    </strong>
+
+                    <span>
+                        Keys Pressed
+                    </span>
+
                 </div>
+
+
+                <div class="quit-stat">
+
+                    <strong id="quitMistakes">
+                        0
+                    </strong>
+
+                    <span>
+                        Mistakes
+                    </span>
+
+                </div>
+
 
             </div>
 
+
             <p>
-                You could have been doing literally anything else.
-                But at least you have this achievement.
+
+                You could have been doing
+                literally anything else.
+
+                <br>
+
+                But at least you tried.
+
             </p>
 
-            <button class="primary-btn" id="homeBtn">
+
+            <button
+                class="primary-btn"
+                id="homeBtn">
+
                 ← BACK TO HOME
+
             </button>
 
         </div>
@@ -1006,65 +2492,80 @@ body.shake{
 
 <script>
 
-/* ==========================================
-   PLAYER NAME
-========================================== */
+/* =====================================================
+   PLAYER
+===================================================== */
 
 function getPlayerName(){
 
-    const possibleKeys = [
+    const keys = [
+
         "playerName",
         "username",
         "name",
         "player",
         "userName"
+
     ];
 
-    for(const key of possibleKeys){
+    for(const key of keys){
 
-        const value = localStorage.getItem(key);
+        const value =
+            localStorage.getItem(key);
 
-        if(value && value.trim() !== ""){
+        if(
+            value &&
+            value.trim() !== ""
+        ){
+
             return value.trim();
+
         }
-    }
-
-    /*
-       Do NOT silently use PLAYER.
-
-       If the login page has not saved a name,
-       ask the player here.
-    */
-
-    let enteredName = prompt(
-        "Enter your player name:"
-    );
-
-    if(!enteredName || enteredName.trim() === ""){
-
-        enteredName = "PLAYER";
 
     }
 
-    enteredName = enteredName.trim();
 
-    localStorage.setItem(
-        "playerName",
-        enteredName
-    );
+    const entered =
+        prompt(
+            "Enter your player name:"
+        );
 
-    return enteredName;
+
+    if(
+        entered &&
+        entered.trim() !== ""
+    ){
+
+        const cleanName =
+            entered.trim();
+
+        localStorage.setItem(
+            "playerName",
+            cleanName
+        );
+
+        return cleanName;
+
+    }
+
+
+    return "PLAYER";
 }
 
-const playerName = getPlayerName();
 
-document.getElementById("playerName").textContent =
-    playerName;
+const playerName =
+    getPlayerName();
 
 
-/* ==========================================
-   KEYBOARD MAPPING
-========================================== */
+document
+    .getElementById("playerName")
+    .textContent =
+        playerName;
+
+
+/* =====================================================
+   MAPPING
+===================================================== */
 
 const keyboardMapping = {
 
@@ -1100,45 +2601,9 @@ const keyboardMapping = {
 };
 
 
-/* ==========================================
-   BUILD KEYBOARD
-========================================== */
-
-const keyboardContainer =
-    document.getElementById("keyboard");
-
-Object.entries(keyboardMapping).forEach(
-    ([physical, output]) => {
-
-        const key = document.createElement("div");
-
-        key.className = "key";
-
-        key.dataset.key = physical;
-
-        key.innerHTML = `
-            <div class="physical">
-                ${physical.toUpperCase()}
-            </div>
-
-            <div class="arrow">
-                ↓
-            </div>
-
-            <div class="output">
-                ${output}
-            </div>
-        `;
-
-        keyboardContainer.appendChild(key);
-
-    }
-);
-
-
-/* ==========================================
-   LEVEL SENTENCES
-========================================== */
+/* =====================================================
+   SENTENCES
+===================================================== */
 
 const levelSentences = [
 
@@ -1205,9 +2670,9 @@ const levelSentences = [
 ];
 
 
-/* ==========================================
+/* =====================================================
    GAME VARIABLES
-========================================== */
+===================================================== */
 
 let currentLevel = "1";
 
@@ -1223,66 +2688,98 @@ let timerInterval = null;
 
 let gameRunning = true;
 
-let totalTimePlayed = 0;
+let targetText =
+    levelSentences[0];
 
-let targetText = levelSentences[0];
+
+/*
+   IMPORTANT:
+
+   This timestamp is created ONCE.
+
+   It means total session time keeps
+   counting across all levels.
+*/
+
+const sessionStartTime =
+    Date.now();
 
 
-/* ==========================================
+/* =====================================================
    ELEMENTS
-========================================== */
-
-const typedTextElement =
-    document.getElementById("typedText");
+===================================================== */
 
 const targetTextElement =
-    document.getElementById("targetText");
+    document.getElementById(
+        "targetText"
+    );
+
+const typedTextElement =
+    document.getElementById(
+        "typedText"
+    );
 
 const levelTitle =
-    document.getElementById("levelTitle");
+    document.getElementById(
+        "levelTitle"
+    );
 
-const levelDisplay =
-    document.getElementById("currentLevelDisplay");
+const currentLevelDisplay =
+    document.getElementById(
+        "currentLevelDisplay"
+    );
 
 const timerElement =
-    document.getElementById("timer");
+    document.getElementById(
+        "timer"
+    );
 
 const mistakesElement =
-    document.getElementById("mistakes");
+    document.getElementById(
+        "mistakes"
+    );
 
 const keysElement =
-    document.getElementById("keysPressed");
+    document.getElementById(
+        "keysPressed"
+    );
 
 const progressPercentElement =
-    document.getElementById("progressPercent");
+    document.getElementById(
+        "progressPercent"
+    );
 
 const progressFill =
-    document.getElementById("progressFill");
+    document.getElementById(
+        "progressFill"
+    );
 
 const distanceText =
-    document.getElementById("distanceText");
+    document.getElementById(
+        "distanceText"
+    );
 
 const messageElement =
-    document.getElementById("message");
+    document.getElementById(
+        "message"
+    );
 
 
-/* ==========================================
+/* =====================================================
    FUNNY MESSAGES
-========================================== */
+===================================================== */
 
 const funnyMessages = [
 
     "Interesting choice...",
 
-    "That was definitely not the correct key.",
-
     "The keyboard disagrees.",
+
+    "That was definitely wrong.",
 
     "Try again, keyboard warrior.",
 
     "Almost... probably.",
-
-    "You are learning the cursed way.",
 
     "Why did you press that?",
 
@@ -1300,153 +2797,228 @@ const funnyMessages = [
 
     "I believe in you. Probably.",
 
-    "Keep going. Waste more time."
+    "Keep going. Waste more time.",
+
+    "Your brain will eventually understand."
 
 ];
 
 
-/* ==========================================
+/* =====================================================
    FORMAT TIME
-========================================== */
+===================================================== */
 
 function formatTime(seconds){
 
+    seconds =
+        Math.max(
+            0,
+            Math.floor(seconds)
+        );
+
     const minutes =
-        Math.floor(seconds / 60);
+        Math.floor(
+            seconds / 60
+        );
 
     const secs =
         seconds % 60;
 
-    return `${String(minutes).padStart(2,"0")}:${String(secs).padStart(2,"0")}`;
+    return (
+
+        String(minutes)
+            .padStart(2,"0")
+
+        +
+
+        ":"
+
+        +
+
+        String(secs)
+            .padStart(2,"0")
+
+    );
 
 }
 
 
-/* ==========================================
-   UPDATE TIMER
-========================================== */
+/* =====================================================
+   TIMER
+===================================================== */
 
 function updateTimer(){
 
     timerElement.textContent =
         formatTime(timeLeft);
 
+
     if(timeLeft <= 30){
 
-        timerElement.classList.add("warning");
+        timerElement
+            .classList
+            .add("warning");
 
     }else{
 
-        timerElement.classList.remove("warning");
+        timerElement
+            .classList
+            .remove("warning");
 
     }
 
 }
 
 
-/* ==========================================
-   START TIMER
-========================================== */
-
 function startTimer(){
 
-    clearInterval(timerInterval);
+    clearInterval(
+        timerInterval
+    );
 
     timeLeft = 600;
 
+    gameRunning = true;
+
     updateTimer();
 
-    timerInterval = setInterval(()=>{
 
-        if(!gameRunning) return;
+    timerInterval =
+        setInterval(()=>{
 
-        timeLeft--;
+            if(!gameRunning){
 
-        totalTimePlayed++;
+                return;
 
-        updateTimer();
+            }
 
-        if(timeLeft <= 0){
 
-            clearInterval(timerInterval);
+            timeLeft--;
 
-            gameRunning = false;
+            updateTimer();
 
-            showGameOver();
 
-        }
+            if(timeLeft <= 0){
 
-    },1000);
+                clearInterval(
+                    timerInterval
+                );
+
+                gameRunning = false;
+
+                showGameOver();
+
+            }
+
+        },1000);
 
 }
 
 
-/* ==========================================
+/* =====================================================
    UPDATE DISPLAY
-========================================== */
+===================================================== */
 
 function updateDisplay(){
 
     typedTextElement.textContent =
         typedText;
 
+
     mistakesElement.textContent =
         mistakes;
+
 
     keysElement.textContent =
         keysPressed;
 
+
     const percent =
+
         targetText.length === 0
+
         ? 0
-        : Math.floor(
-            (typedText.length / targetText.length) * 100
+
+        :
+
+        Math.floor(
+
+            (
+                typedText.length /
+                targetText.length
+            )
+            *
+            100
+
         );
+
 
     progressPercentElement.textContent =
         percent + "%";
 
-    progressFill.style.width =
-        Math.min(percent,99) + "%";
 
-    const fakeProgress =
+    progressFill.style.width =
+
         Math.min(
-            99.999,
-            parseFloat(
-                currentLevel === "1"
-                ? "0"
-                : "99." + "9".repeat(
-                    Math.min(
-                        currentLevel.length,
-                        4
-                    )
-                )
-            )
-        );
+            percent,
+            99
+        )
+
+        +
+
+        "%";
+
+
+    /*
+       Fake distance to Level 2.
+       It never reaches 100%.
+    */
+
+    let fakeProgress = 0;
+
+
+    if(currentLevel !== "1"){
+
+        fakeProgress =
+            Math.min(
+                99.99,
+                90 +
+                currentLevel.length * 1.2
+            );
+
+    }
+
 
     distanceText.textContent =
-        fakeProgress + "% remaining";
+        fakeProgress.toFixed(2)
+        +
+        "% complete";
 
 }
 
 
-/* ==========================================
-   GET NEXT LEVEL
-========================================== */
+/* =====================================================
+   NEXT LEVEL
+===================================================== */
 
 function getNextLevel(level){
 
     if(level === "1"){
+
         return "1.1";
+
     }
+
 
     const decimal =
         level.substring(2);
+
 
     if(decimal.length === 1){
 
         const digit =
             parseInt(decimal);
+
 
         if(digit < 9){
 
@@ -1454,12 +3026,17 @@ function getNextLevel(level){
 
         }
 
+
         return "1.91";
 
     }
 
+
     const lastDigit =
-        decimal[decimal.length - 1];
+        decimal[
+            decimal.length - 1
+        ];
+
 
     const prefix =
         decimal.substring(
@@ -1467,20 +3044,22 @@ function getNextLevel(level){
             decimal.length - 1
         );
 
+
     if(lastDigit !== "9"){
 
         return `1.${prefix}${Number(lastDigit) + 1}`;
 
     }
 
+
     return `1.${decimal}1`;
 
 }
 
 
-/* ==========================================
-   GET SENTENCE
-========================================== */
+/* =====================================================
+   SENTENCE FOR LEVEL
+===================================================== */
 
 function getSentenceForLevel(){
 
@@ -1490,212 +3069,481 @@ function getSentenceForLevel(){
 
     }
 
+
     const decimal =
         currentLevel.substring(2);
 
+
     let index = 0;
 
-    for(let i = 0; i < decimal.length; i++){
+
+    for(
+        let i = 0;
+        i < decimal.length;
+        i++
+    ){
 
         index +=
             decimal.charCodeAt(i) - 48;
 
     }
 
+
     index =
-        index % levelSentences.length;
+        index %
+        levelSentences.length;
+
 
     return levelSentences[index];
 
 }
 
 
-/* ==========================================
-   CHECK COMPLETION
-========================================== */
+/* =====================================================
+   CORRECT KEY ANIMATION
+===================================================== */
 
-function checkCompletion(){
+function animateCorrectKey(key){
 
-    if(
-        typedText === targetText
-    ){
+    const element =
+        document.querySelector(
+            `.key[data-key="${key}"]`
+        );
 
-        gameRunning = false;
 
-        clearInterval(timerInterval);
+    if(!element){
 
-        document
-            .getElementById("successOverlay")
-            .classList.add("show");
+        return;
 
     }
+
+
+    element
+        .classList
+        .remove("correct");
+
+
+    void element.offsetWidth;
+
+
+    element
+        .classList
+        .add("correct");
+
+
+    setTimeout(()=>{
+
+        element
+            .classList
+            .remove("correct");
+
+    },180);
 
 }
 
 
-/* ==========================================
-   WRONG KEY EFFECT
-========================================== */
+/* =====================================================
+   WRONG KEY
+===================================================== */
 
 function wrongKey(key){
 
     mistakes++;
 
-    document.body.classList.remove("shake");
+
+    document.body
+        .classList
+        .remove("shake");
+
 
     void document.body.offsetWidth;
 
-    document.body.classList.add("shake");
 
-    const keyElement =
+    document.body
+        .classList
+        .add("shake");
+
+
+    const element =
         document.querySelector(
             `.key[data-key="${key}"]`
         );
 
-    if(keyElement){
 
-        keyElement.classList.add("wrong");
+    if(element){
+
+        element
+            .classList
+            .remove("wrong");
+
+
+        void element.offsetWidth;
+
+
+        element
+            .classList
+            .add("wrong");
+
 
         setTimeout(()=>{
 
-            keyElement.classList.remove("wrong");
+            element
+                .classList
+                .remove("wrong");
 
         },300);
 
     }
 
+
     const randomMessage =
+
         funnyMessages[
             Math.floor(
-                Math.random() *
+                Math.random()
+                *
                 funnyMessages.length
             )
         ];
 
+
     messageElement.textContent =
         randomMessage;
+
 
     updateDisplay();
 
 }
 
 
-/* ==========================================
-   KEYBOARD INPUT
-========================================== */
+/* =====================================================
+   PROCESS PHYSICAL KEY
+===================================================== */
+
+function processPhysicalKey(key){
+
+    if(!gameRunning){
+
+        return;
+
+    }
+
+
+    key =
+        key.toLowerCase();
+
+
+    if(
+        !keyboardMapping
+            .hasOwnProperty(key)
+    ){
+
+        return;
+
+    }
+
+
+    keysPressed++;
+
+
+    const producedLetter =
+        keyboardMapping[key];
+
+
+    const expected =
+        targetText[
+            typedText.length
+        ];
+
+
+    if(
+        producedLetter ===
+        expected
+    ){
+
+        typedText +=
+            producedLetter;
+
+
+        animateCorrectKey(
+            key
+        );
+
+
+        messageElement.textContent =
+            "Correct! Somehow.";
+
+    }else{
+
+        wrongKey(key);
+
+    }
+
+
+    updateDisplay();
+
+
+    checkCompletion();
+
+}
+
+
+/* =====================================================
+   PROCESS SPACE
+===================================================== */
+
+function processSpace(){
+
+    if(!gameRunning){
+
+        return;
+
+    }
+
+
+    keysPressed++;
+
+
+    const expected =
+        targetText[
+            typedText.length
+        ];
+
+
+    if(expected === " "){
+
+        typedText += " ";
+
+        messageElement.textContent =
+            "A SPACE! Revolutionary.";
+
+    }else{
+
+        messageElement.textContent =
+            "You pressed space at the wrong time.";
+
+        mistakes++;
+
+    }
+
+
+    updateDisplay();
+
+
+    checkCompletion();
+
+}
+
+
+/* =====================================================
+   BACKSPACE
+===================================================== */
+
+function processBackspace(){
+
+    if(!gameRunning){
+
+        return;
+
+    }
+
+
+    if(typedText.length > 0){
+
+        typedText =
+            typedText.slice(
+                0,
+                -1
+            );
+
+        messageElement.textContent =
+            "Fine. We'll pretend that never happened.";
+
+    }else{
+
+        messageElement.textContent =
+            "There is nothing to delete.";
+
+    }
+
+
+    updateDisplay();
+
+}
+
+
+/* =====================================================
+   PHONE / TOUCH KEYBOARD
+===================================================== */
+
+document
+    .querySelectorAll(".key")
+    .forEach(keyElement => {
+
+
+        /*
+           pointerdown works much better
+           on phones than relying on click.
+        */
+
+        keyElement.addEventListener(
+            "pointerdown",
+            function(event){
+
+                event.preventDefault();
+
+                const key =
+                    this.dataset.key;
+
+                processPhysicalKey(
+                    key
+                );
+
+            }
+        );
+
+    });
+
+
+/* =====================================================
+   SPACE BUTTON
+===================================================== */
+
+document
+    .getElementById("spaceKey")
+    .addEventListener(
+        "pointerdown",
+        function(event){
+
+            event.preventDefault();
+
+            processSpace();
+
+        }
+    );
+
+
+/* =====================================================
+   BACKSPACE BUTTON
+===================================================== */
+
+document
+    .getElementById("backspaceKey")
+    .addEventListener(
+        "pointerdown",
+        function(event){
+
+            event.preventDefault();
+
+            processBackspace();
+
+        }
+    );
+
+
+/* =====================================================
+   REAL PHYSICAL KEYBOARD
+===================================================== */
 
 document.addEventListener(
     "keydown",
     function(event){
 
-        if(!gameRunning) return;
+        if(!gameRunning){
 
-        const physicalKey =
+            return;
+
+        }
+
+
+        const key =
             event.key.toLowerCase();
 
-        /* SPACE */
+
+        /*
+           Space
+        */
 
         if(event.code === "Space"){
 
             event.preventDefault();
 
-            keysPressed++;
-
-            const expected =
-                targetText[
-                    typedText.length
-                ];
-
-            if(expected === " "){
-
-                typedText += " ";
-
-            }else{
-
-                wrongKey("space");
-
-            }
-
-            updateDisplay();
-
-            checkCompletion();
+            processSpace();
 
             return;
 
         }
 
-        /* MAPPED KEYS */
 
-        if(
-            !keyboardMapping
-                .hasOwnProperty(physicalKey)
-        ){
+        /*
+           Backspace
+        */
+
+        if(event.key === "Backspace"){
+
+            event.preventDefault();
+
+            processBackspace();
 
             return;
 
         }
 
-        event.preventDefault();
 
-        keysPressed++;
-
-        const producedLetter =
-            keyboardMapping[
-                physicalKey
-            ];
-
-        const expectedCharacter =
-            targetText[
-                typedText.length
-            ];
+        /*
+           Normal mapped keys
+        */
 
         if(
-            producedLetter ===
-            expectedCharacter
+            keyboardMapping
+                .hasOwnProperty(key)
         ){
 
-            typedText +=
-                producedLetter;
+            event.preventDefault();
 
-            const keyElement =
-                document.querySelector(
-                    `.key[data-key="${physicalKey}"]`
-                );
-
-            if(keyElement){
-
-                keyElement.classList.add("correct");
-
-                setTimeout(()=>{
-
-                    keyElement.classList.remove("correct");
-
-                },180);
-
-            }
-
-            messageElement.textContent =
-                "Correct! Somehow.";
-
-        }else{
-
-            wrongKey(
-                physicalKey
+            processPhysicalKey(
+                key
             );
 
         }
-
-        updateDisplay();
-
-        checkCompletion();
 
     }
 );
 
 
-/* ==========================================
-   NEXT LEVEL
-========================================== */
+/* =====================================================
+   COMPLETION
+===================================================== */
+
+function checkCompletion(){
+
+    if(
+        typedText ===
+        targetText
+    ){
+
+        gameRunning = false;
+
+        clearInterval(
+            timerInterval
+        );
+
+
+        document
+            .getElementById(
+                "successOverlay"
+            )
+            .classList
+            .add("show");
+
+    }
+
+}
+
+
+/* =====================================================
+   NEXT LEVEL BUTTON
+===================================================== */
 
 document
     .getElementById("nextLevelBtn")
@@ -1705,27 +3553,39 @@ document
     );
 
 
+/* =====================================================
+   LOADING
+===================================================== */
+
 function startLoading(){
 
     document
-        .getElementById("successOverlay")
-        .classList.remove("show");
+        .getElementById(
+            "successOverlay"
+        )
+        .classList
+        .remove("show");
+
 
     document
-        .getElementById("loadingOverlay")
-        .classList.add("show");
+        .getElementById(
+            "loadingOverlay"
+        )
+        .classList
+        .add("show");
 
-    let progress = 0;
 
     const fill =
         document.getElementById(
             "loadingFill"
         );
 
+
     const loadingMessage =
         document.getElementById(
             "loadingMessage"
         );
+
 
     const messages = [
 
@@ -1751,11 +3611,16 @@ function startLoading(){
 
     ];
 
-    const loadingInterval =
+
+    let progress = 0;
+
+
+    const interval =
         setInterval(()=>{
 
             progress +=
-                Math.random() * 5;
+                Math.random() * 7;
+
 
             if(progress >= 99){
 
@@ -1763,14 +3628,20 @@ function startLoading(){
 
             }
 
+
             fill.style.width =
                 progress + "%";
 
+
             const index =
                 Math.floor(
-                    (progress / 100) *
+                    (
+                        progress / 100
+                    )
+                    *
                     messages.length
                 );
+
 
             loadingMessage.textContent =
                 messages[
@@ -1780,34 +3651,40 @@ function startLoading(){
                     )
                 ];
 
-        },250);
+
+        },220);
 
 
     setTimeout(()=>{
 
-        clearInterval(
-            loadingInterval
-        );
+        clearInterval(interval);
+
 
         currentLevel =
             getNextLevel(
                 currentLevel
             );
 
+
         document
-            .getElementById("loadingOverlay")
-            .classList.remove("show");
+            .getElementById(
+                "loadingOverlay"
+            )
+            .classList
+            .remove("show");
+
 
         beginNextLevel();
+
 
     },4000);
 
 }
 
 
-/* ==========================================
+/* =====================================================
    BEGIN NEXT LEVEL
-========================================== */
+===================================================== */
 
 function beginNextLevel(){
 
@@ -1817,46 +3694,79 @@ function beginNextLevel(){
 
     keysPressed = 0;
 
+
     targetText =
         getSentenceForLevel();
 
-    levelTitle.textContent =
-        "LEVEL " + currentLevel;
 
-    levelDisplay.textContent =
+    levelTitle.textContent =
+        "LEVEL " +
         currentLevel;
+
+
+    currentLevelDisplay.textContent =
+        currentLevel;
+
 
     targetTextElement.textContent =
         targetText;
 
+
     messageElement.textContent =
         "Oh... this isn't Level 2.";
 
+
     gameRunning = true;
 
+
     startTimer();
+
 
     updateDisplay();
 
 }
 
 
-/* ==========================================
+/* =====================================================
    GAME OVER
-========================================== */
+===================================================== */
 
 function showGameOver(){
 
+    clearInterval(
+        timerInterval
+    );
+
+
     document
-        .getElementById("gameOverOverlay")
-        .classList.add("show");
+        .getElementById(
+            "gameOverOverlay"
+        )
+        .classList
+        .add("show");
 
 }
 
 
-/* ==========================================
+/* =====================================================
+   RETRY
+===================================================== */
+
+document
+    .getElementById("retryBtn")
+    .addEventListener(
+        "click",
+        function(){
+
+            window.location.reload();
+
+        }
+    );
+
+
+/* =====================================================
    QUIT GAME
-========================================== */
+===================================================== */
 
 document
     .getElementById("quitBtn")
@@ -1869,40 +3779,35 @@ document
 function quitGame(){
 
     /*
-       Stop the game completely.
+       Completely stop the game.
     */
 
     gameRunning = false;
 
-    clearInterval(timerInterval);
+    clearInterval(
+        timerInterval
+    );
 
 
     /*
-       Calculate time spent.
+       Calculate EXACT session time.
 
-       Started with 600 seconds.
-       Whatever remains is subtracted.
+       Unlike the old version, this does
+       NOT reset when changing levels.
+
+       It counts from the moment levels.html
+       was opened.
     */
 
-    const timeSpent =
-        600 - timeLeft;
-
-    /*
-       If the player has played multiple
-       levels, add the current session time.
-    */
-
-    totalTimePlayed += timeSpent;
-
-
-    /*
-       Prevent accidental double counting.
-    */
-
-    const finalTime =
-        Math.max(
-            totalTimePlayed,
-            0
+    const totalSeconds =
+        Math.floor(
+            (
+                Date.now()
+                -
+                sessionStartTime
+            )
+            /
+            1000
         );
 
 
@@ -1910,25 +3815,38 @@ function quitGame(){
        Update quit screen.
     */
 
-    document.getElementById(
-        "totalWastedTime"
-    ).textContent =
-        formatTime(finalTime);
+    document
+        .getElementById(
+            "totalWastedTime"
+        )
+        .textContent =
+            formatTime(
+                totalSeconds
+            );
 
-    document.getElementById(
-        "quitLevel"
-    ).textContent =
-        currentLevel;
 
-    document.getElementById(
-        "quitKeys"
-    ).textContent =
-        keysPressed;
+    document
+        .getElementById(
+            "quitLevel"
+        )
+        .textContent =
+            currentLevel;
 
-    document.getElementById(
-        "quitMistakes"
-    ).textContent =
-        mistakes;
+
+    document
+        .getElementById(
+            "quitKeys"
+        )
+        .textContent =
+            keysPressed;
+
+
+    document
+        .getElementById(
+            "quitMistakes"
+        )
+        .textContent =
+            mistakes;
 
 
     /*
@@ -1936,16 +3854,27 @@ function quitGame(){
     */
 
     document
-        .getElementById("successOverlay")
-        .classList.remove("show");
+        .getElementById(
+            "successOverlay"
+        )
+        .classList
+        .remove("show");
+
 
     document
-        .getElementById("loadingOverlay")
-        .classList.remove("show");
+        .getElementById(
+            "loadingOverlay"
+        )
+        .classList
+        .remove("show");
+
 
     document
-        .getElementById("gameOverOverlay")
-        .classList.remove("show");
+        .getElementById(
+            "gameOverOverlay"
+        )
+        .classList
+        .remove("show");
 
 
     /*
@@ -1953,15 +3882,18 @@ function quitGame(){
     */
 
     document
-        .getElementById("quitPage")
-        .classList.add("show");
+        .getElementById(
+            "quitPage"
+        )
+        .classList
+        .add("show");
 
 }
 
 
-/* ==========================================
-   BACK TO INDEX.HTML
-========================================== */
+/* =====================================================
+   BACK TO HOME
+===================================================== */
 
 document
     .getElementById("homeBtn")
@@ -1976,76 +3908,96 @@ document
     );
 
 
-/* ==========================================
+/* =====================================================
    DARK MODE
-========================================== */
+===================================================== */
 
 const themeBtn =
     document.getElementById(
         "themeBtn"
     );
 
+
 function loadTheme(){
 
-    const savedTheme =
+    const theme =
         localStorage.getItem(
             "keyboardTheme"
         );
 
-    if(savedTheme === "dark"){
 
-        document.body.classList.add(
-            "dark"
-        );
+    if(theme === "dark"){
 
-        themeBtn.textContent = "☀️";
+        document.body
+            .classList
+            .add("dark");
+
+        themeBtn.textContent =
+            "☀️";
+
+    }else{
+
+        document.body
+            .classList
+            .remove("dark");
+
+        themeBtn.textContent =
+            "🌙";
 
     }
 
 }
 
+
 themeBtn.addEventListener(
     "click",
     function(){
 
-        document.body.classList.toggle(
-            "dark"
-        );
+        document.body
+            .classList
+            .toggle("dark");
+
 
         const isDark =
-            document.body.classList.contains(
-                "dark"
-            );
+            document.body
+                .classList
+                .contains("dark");
+
 
         localStorage.setItem(
             "keyboardTheme",
             isDark
-            ? "dark"
-            : "light"
+                ? "dark"
+                : "light"
         );
+
 
         themeBtn.textContent =
             isDark
-            ? "☀️"
-            : "🌙";
+                ? "☀️"
+                : "🌙";
 
     }
 );
 
 
-/* ==========================================
+/* =====================================================
    INITIALIZE
-========================================== */
+===================================================== */
 
 loadTheme();
+
 
 targetText =
     levelSentences[0];
 
+
 targetTextElement.textContent =
     targetText;
 
+
 updateDisplay();
+
 
 startTimer();
 
