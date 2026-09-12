@@ -1,0 +1,2055 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>The Keyboard We All Wished For!!</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+:root{
+    --text:#111827;
+    --muted:#6b7280;
+    --card:rgba(255,255,255,0.58);
+    --card-border:rgba(255,255,255,0.72);
+    --key:rgba(255,255,255,0.72);
+    --key-border:rgba(255,255,255,0.9);
+    --accent:#6366f1;
+    --accent2:#8b5cf6;
+    --danger:#ef4444;
+    --shadow:0 25px 70px rgba(31,38,135,0.15);
+}
+
+body.dark{
+    --text:#f8fafc;
+    --muted:#a1a1aa;
+    --card:rgba(17,24,39,0.55);
+    --card-border:rgba(255,255,255,0.12);
+    --key:rgba(30,41,59,0.72);
+    --key-border:rgba(255,255,255,0.12);
+    --shadow:0 25px 70px rgba(0,0,0,0.4);
+}
+
+html,
+body{
+    min-height:100%;
+}
+
+body{
+    font-family:'Inter',sans-serif;
+    color:var(--text);
+    overflow-x:hidden;
+    background:
+        radial-gradient(circle at 10% 20%, rgba(99,102,241,.28), transparent 30%),
+        radial-gradient(circle at 90% 20%, rgba(168,85,247,.25), transparent 30%),
+        radial-gradient(circle at 50% 100%, rgba(14,165,233,.2), transparent 35%),
+        linear-gradient(135deg,#eef2ff,#f8fafc,#ede9fe);
+    transition:background .5s ease,color .4s ease;
+}
+
+body.dark{
+    background:
+        radial-gradient(circle at 10% 20%, rgba(79,70,229,.25), transparent 30%),
+        radial-gradient(circle at 90% 20%, rgba(124,58,237,.25), transparent 30%),
+        radial-gradient(circle at 50% 100%, rgba(8,145,178,.18), transparent 35%),
+        linear-gradient(135deg,#020617,#0f172a,#111827);
+}
+
+/* =========================
+   ANIMATED BACKGROUND
+========================= */
+
+.background{
+    position:fixed;
+    inset:0;
+    overflow:hidden;
+    pointer-events:none;
+    z-index:-1;
+}
+
+.blob{
+    position:absolute;
+    border-radius:50%;
+    filter:blur(70px);
+    opacity:.35;
+    animation:float 15s infinite alternate ease-in-out;
+}
+
+.blob.one{
+    width:320px;
+    height:320px;
+    background:#818cf8;
+    left:-80px;
+    top:80px;
+}
+
+.blob.two{
+    width:380px;
+    height:380px;
+    background:#c084fc;
+    right:-100px;
+    top:180px;
+    animation-delay:-5s;
+}
+
+.blob.three{
+    width:300px;
+    height:300px;
+    background:#38bdf8;
+    left:40%;
+    bottom:-100px;
+    animation-delay:-9s;
+}
+
+@keyframes float{
+    0%{
+        transform:translate(0,0) scale(1);
+    }
+    50%{
+        transform:translate(70px,-50px) scale(1.15);
+    }
+    100%{
+        transform:translate(-50px,70px) scale(.95);
+    }
+}
+
+/* =========================
+   MAIN
+========================= */
+
+.page{
+    width:min(1450px,94%);
+    margin:auto;
+    padding:30px 0 30px;
+}
+
+.topbar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:25px;
+}
+
+.logo{
+    font-family:'Space Grotesk',sans-serif;
+    font-weight:800;
+    font-size:clamp(18px,2vw,26px);
+}
+
+.theme-btn{
+    border:1px solid var(--card-border);
+    background:var(--card);
+    backdrop-filter:blur(20px);
+    -webkit-backdrop-filter:blur(20px);
+    width:48px;
+    height:48px;
+    border-radius:15px;
+    cursor:pointer;
+    font-size:20px;
+    box-shadow:var(--shadow);
+    color:var(--text);
+    transition:.3s;
+}
+
+.theme-btn:hover{
+    transform:translateY(-3px);
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.game-header{
+    text-align:center;
+    margin-bottom:25px;
+}
+
+.game-header h1{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:clamp(34px,5vw,62px);
+    font-weight:800;
+    letter-spacing:-2px;
+}
+
+.game-header p{
+    color:var(--muted);
+    margin-top:7px;
+    font-size:14px;
+}
+
+.level-info{
+    display:flex;
+    justify-content:center;
+    gap:15px;
+    flex-wrap:wrap;
+    margin-top:18px;
+}
+
+.info-pill{
+    padding:9px 17px;
+    border-radius:999px;
+    background:var(--card);
+    border:1px solid var(--card-border);
+    backdrop-filter:blur(18px);
+    font-size:13px;
+    font-weight:700;
+    box-shadow:var(--shadow);
+}
+
+#timer{
+    font-size:18px;
+    font-weight:900;
+    color:var(--accent);
+}
+
+#timer.warning{
+    color:var(--danger);
+    animation:pulse .7s infinite alternate;
+}
+
+@keyframes pulse{
+    from{transform:scale(1)}
+    to{transform:scale(1.08)}
+}
+
+/* =========================
+   GLASS CARD
+========================= */
+
+.glass{
+    background:var(--card);
+    border:1px solid var(--card-border);
+    backdrop-filter:blur(25px);
+    -webkit-backdrop-filter:blur(25px);
+    box-shadow:var(--shadow);
+    border-radius:28px;
+}
+
+/* =========================
+   TARGET
+========================= */
+
+.target-card{
+    padding:25px;
+    text-align:center;
+    margin-bottom:20px;
+}
+
+.small-label{
+    text-transform:uppercase;
+    font-size:11px;
+    font-weight:900;
+    letter-spacing:2px;
+    color:var(--muted);
+    margin-bottom:12px;
+}
+
+.target-text{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:clamp(20px,3vw,36px);
+    font-weight:800;
+    letter-spacing:.5px;
+    word-break:break-word;
+}
+
+/* =========================
+   TYPED TEXT
+========================= */
+
+.typed-card{
+    padding:22px;
+    margin-bottom:25px;
+}
+
+.typed-text{
+    min-height:58px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family:'Space Grotesk',sans-serif;
+    font-size:22px;
+    font-weight:700;
+    word-break:break-word;
+    text-align:center;
+}
+
+.cursor{
+    display:inline-block;
+    width:3px;
+    height:25px;
+    background:var(--accent);
+    margin-left:4px;
+    animation:blink .8s infinite;
+}
+
+@keyframes blink{
+    50%{opacity:0}
+}
+
+/* =========================
+   KEYBOARD
+========================= */
+
+.keyboard-card{
+    padding:25px;
+    margin-bottom:20px;
+}
+
+.keyboard-title{
+    text-align:center;
+    font-weight:900;
+    font-family:'Space Grotesk',sans-serif;
+    font-size:20px;
+    margin-bottom:6px;
+}
+
+.keyboard-subtitle{
+    text-align:center;
+    color:var(--muted);
+    font-size:12px;
+    margin-bottom:22px;
+}
+
+.keyboard{
+    display:grid;
+    grid-template-columns:repeat(10,1fr);
+    gap:9px;
+    max-width:1050px;
+    margin:auto;
+}
+
+.key{
+    position:relative;
+    min-height:76px;
+    padding:8px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    border-radius:16px;
+    background:var(--key);
+    border:1px solid var(--key-border);
+    box-shadow:
+        0 7px 15px rgba(0,0,0,.08),
+        inset 0 1px 0 rgba(255,255,255,.5);
+    transition:.15s;
+}
+
+.key .physical{
+    font-size:18px;
+    font-weight:900;
+}
+
+.key .arrow{
+    font-size:12px;
+    color:var(--muted);
+    margin:2px 0;
+}
+
+.key .output{
+    font-size:13px;
+    font-weight:800;
+    color:var(--accent);
+}
+
+.key.correct{
+    transform:translateY(-7px) scale(1.05);
+    box-shadow:0 12px 25px rgba(99,102,241,.25);
+}
+
+.key.wrong{
+    animation:keyWrong .3s;
+    border-color:var(--danger);
+}
+
+@keyframes keyWrong{
+    0%,100%{transform:translateX(0)}
+    25%{transform:translateX(-7px)}
+    75%{transform:translateX(7px)}
+}
+
+/* =========================
+   STATS
+========================= */
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+    margin-bottom:20px;
+}
+
+.stat{
+    padding:18px;
+    text-align:center;
+}
+
+.stat-value{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:28px;
+    font-weight:900;
+}
+
+.stat-label{
+    font-size:11px;
+    color:var(--muted);
+    text-transform:uppercase;
+    letter-spacing:1px;
+    margin-top:4px;
+}
+
+/* =========================
+   PROGRESS
+========================= */
+
+.progress-card{
+    padding:22px;
+    margin-bottom:20px;
+}
+
+.progress-header{
+    display:flex;
+    justify-content:space-between;
+    gap:15px;
+    font-size:13px;
+    font-weight:800;
+    margin-bottom:10px;
+}
+
+.progress-track{
+    width:100%;
+    height:13px;
+    background:rgba(0,0,0,.08);
+    border-radius:999px;
+    overflow:hidden;
+}
+
+body.dark .progress-track{
+    background:rgba(255,255,255,.08);
+}
+
+.progress-fill{
+    height:100%;
+    width:0%;
+    border-radius:999px;
+    background:linear-gradient(90deg,var(--accent),var(--accent2));
+    transition:width .3s ease;
+}
+
+/* =========================
+   MESSAGE
+========================= */
+
+.message{
+    min-height:25px;
+    text-align:center;
+    font-weight:800;
+    color:var(--accent);
+    margin:15px 0 25px;
+}
+
+/* =========================
+   QUIT
+========================= */
+
+.quit-area{
+    display:flex;
+    justify-content:center;
+    padding:10px 0 15px;
+}
+
+.quit-btn{
+    border:1px solid rgba(239,68,68,.25);
+    background:rgba(239,68,68,.08);
+    color:#dc2626;
+    padding:13px 28px;
+    border-radius:14px;
+    font-size:13px;
+    font-weight:900;
+    letter-spacing:.5px;
+    cursor:pointer;
+    transition:.25s;
+}
+
+.quit-btn:hover{
+    background:rgba(239,68,68,.16);
+    transform:translateY(-2px);
+}
+
+body.dark .quit-btn{
+    color:#f87171;
+}
+
+/* =========================
+   OVERLAYS
+========================= */
+
+.overlay{
+    position:fixed;
+    inset:0;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:25px;
+    background:rgba(2,6,23,.45);
+    backdrop-filter:blur(15px);
+    z-index:100;
+}
+
+.overlay.show{
+    display:flex;
+}
+
+.modal{
+    width:min(600px,100%);
+    padding:40px;
+    text-align:center;
+    border-radius:32px;
+    background:var(--card);
+    border:1px solid var(--card-border);
+    backdrop-filter:blur(30px);
+    box-shadow:0 35px 100px rgba(0,0,0,.25);
+}
+
+.modal-icon{
+    font-size:55px;
+    margin-bottom:15px;
+}
+
+.modal h2{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:clamp(28px,5vw,44px);
+    margin-bottom:10px;
+}
+
+.modal p{
+    color:var(--muted);
+    line-height:1.6;
+    margin-bottom:25px;
+}
+
+.primary-btn{
+    border:none;
+    padding:15px 25px;
+    border-radius:15px;
+    color:white;
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    font-weight:900;
+    cursor:pointer;
+    transition:.25s;
+}
+
+.primary-btn:hover{
+    transform:translateY(-3px);
+    box-shadow:0 15px 30px rgba(99,102,241,.3);
+}
+
+/* =========================
+   QUIT PAGE
+========================= */
+
+.quit-page{
+    width:min(850px,100%);
+    text-align:center;
+}
+
+.quit-page .modal{
+    width:100%;
+}
+
+.quit-title{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:clamp(38px,7vw,75px);
+    font-weight:900;
+    letter-spacing:-3px;
+    margin-bottom:8px;
+}
+
+.quit-subtitle{
+    color:var(--muted);
+    margin-bottom:30px;
+}
+
+.regret{
+    font-size:clamp(22px,4vw,38px);
+    font-weight:900;
+    line-height:1.25;
+    margin:25px auto;
+    max-width:700px;
+}
+
+.regret span{
+    color:var(--accent);
+}
+
+.wasted-time{
+    margin:25px auto;
+    padding:25px;
+    border-radius:22px;
+    background:rgba(99,102,241,.08);
+    border:1px solid rgba(99,102,241,.15);
+}
+
+.wasted-label{
+    font-size:11px;
+    font-weight:900;
+    text-transform:uppercase;
+    letter-spacing:2px;
+    color:var(--muted);
+}
+
+.wasted-value{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:clamp(38px,7vw,65px);
+    font-weight:900;
+    color:var(--accent);
+    margin-top:6px;
+}
+
+.quit-stats{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+    margin:20px 0 30px;
+}
+
+.quit-stat{
+    padding:16px;
+    border-radius:18px;
+    background:rgba(255,255,255,.22);
+    border:1px solid var(--card-border);
+}
+
+body.dark .quit-stat{
+    background:rgba(255,255,255,.04);
+}
+
+.quit-stat strong{
+    display:block;
+    font-size:24px;
+    font-family:'Space Grotesk',sans-serif;
+}
+
+.quit-stat span{
+    font-size:10px;
+    color:var(--muted);
+    text-transform:uppercase;
+    letter-spacing:1px;
+}
+
+/* =========================
+   SHAKE
+========================= */
+
+body.shake{
+    animation:screenShake .3s;
+}
+
+@keyframes screenShake{
+    0%,100%{transform:translateX(0)}
+    20%{transform:translateX(-8px)}
+    40%{transform:translateX(8px)}
+    60%{transform:translateX(-6px)}
+    80%{transform:translateX(6px)}
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:900px){
+    .keyboard{
+        grid-template-columns:repeat(7,1fr);
+    }
+
+    .key{
+        min-height:68px;
+    }
+}
+
+@media(max-width:600px){
+    .page{
+        width:94%;
+        padding-top:20px;
+    }
+
+    .keyboard{
+        grid-template-columns:repeat(5,1fr);
+    }
+
+    .key{
+        min-height:60px;
+    }
+
+    .key .physical{
+        font-size:15px;
+    }
+
+    .key .output{
+        font-size:11px;
+    }
+
+    .stats,
+    .quit-stats{
+        grid-template-columns:1fr;
+    }
+
+    .modal{
+        padding:28px 20px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="background">
+    <div class="blob one"></div>
+    <div class="blob two"></div>
+    <div class="blob three"></div>
+</div>
+
+<!-- =========================
+     GAME PAGE
+========================= -->
+
+<main class="page" id="gamePage">
+
+    <div class="topbar">
+        <div class="logo">
+            The Keyboard We All Wished For!!
+        </div>
+
+        <button class="theme-btn" id="themeBtn">🌙</button>
+    </div>
+
+    <header class="game-header">
+
+        <h1 id="levelTitle">LEVEL 1</h1>
+
+        <p>
+            Welcome, <strong id="playerName">PLAYER</strong>.
+            Good luck. You're going to need it.
+        </p>
+
+        <div class="level-info">
+
+            <div class="info-pill">
+                LEVEL:
+                <span id="currentLevelDisplay">1</span>
+            </div>
+
+            <div class="info-pill">
+                TIME:
+                <span id="timer">10:00</span>
+            </div>
+
+        </div>
+
+    </header>
+
+    <!-- TARGET -->
+
+    <section class="glass target-card">
+
+        <div class="small-label">
+            Type this sentence
+        </div>
+
+        <div class="target-text" id="targetText">
+            PLAYER LOVE THIS GAME
+        </div>
+
+    </section>
+
+    <!-- TYPED -->
+
+    <section class="glass typed-card">
+
+        <div class="small-label">
+            Your cursed typing
+        </div>
+
+        <div class="typed-text">
+            <span id="typedText"></span>
+            <span class="cursor"></span>
+        </div>
+
+    </section>
+
+    <!-- KEYBOARD -->
+
+    <section class="glass keyboard-card">
+
+        <div class="keyboard-title">
+            The Keyboard
+        </div>
+
+        <div class="keyboard-subtitle">
+            Physical key → Letter produced
+        </div>
+
+        <div class="keyboard" id="keyboard"></div>
+
+    </section>
+
+    <!-- STATS -->
+
+    <section class="stats">
+
+        <div class="glass stat">
+            <div class="stat-value" id="mistakes">0</div>
+            <div class="stat-label">Mistakes</div>
+        </div>
+
+        <div class="glass stat">
+            <div class="stat-value" id="keysPressed">0</div>
+            <div class="stat-label">Keys Pressed</div>
+        </div>
+
+        <div class="glass stat">
+            <div class="stat-value" id="progressPercent">0%</div>
+            <div class="stat-label">Progress</div>
+        </div>
+
+    </section>
+
+    <!-- PROGRESS -->
+
+    <section class="glass progress-card">
+
+        <div class="progress-header">
+            <span>Distance to Level 2</span>
+            <span id="distanceText">99.99% remaining</span>
+        </div>
+
+        <div class="progress-track">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+    </section>
+
+    <div class="message" id="message">
+        This should be easy...
+    </div>
+
+    <!-- QUIT -->
+
+    <div class="quit-area">
+        <button class="quit-btn" id="quitBtn">
+            ✕ QUIT GAME
+        </button>
+    </div>
+
+</main>
+
+
+<!-- =========================
+     SUCCESS OVERLAY
+========================= -->
+
+<div class="overlay" id="successOverlay">
+
+    <div class="modal">
+
+        <div class="modal-icon">🎉</div>
+
+        <h2>LEVEL COMPLETE!</h2>
+
+        <p>
+            Incredible. Somehow you survived that level.
+            Surely Level 2 is next...
+        </p>
+
+        <button class="primary-btn" id="nextLevelBtn">
+            PREPARE FOR LEVEL 2
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     LOADING OVERLAY
+========================= -->
+
+<div class="overlay" id="loadingOverlay">
+
+    <div class="modal">
+
+        <div class="modal-icon">⚙️</div>
+
+        <h2>PREPARING LEVEL 2...</h2>
+
+        <p id="loadingMessage">
+            Calculating your progress...
+        </p>
+
+        <div class="progress-track">
+            <div class="progress-fill" id="loadingFill"></div>
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     GAME OVER OVERLAY
+========================= -->
+
+<div class="overlay" id="gameOverOverlay">
+
+    <div class="modal">
+
+        <div class="modal-icon">💀</div>
+
+        <h2>TIME'S UP!</h2>
+
+        <p>
+            Ten minutes of your life have disappeared.
+            And Level 2 is still waiting somewhere...
+        </p>
+
+        <button class="primary-btn" onclick="location.reload()">
+            TRY AGAIN
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     QUIT PAGE
+     INSIDE LEVELS.HTML
+========================= -->
+
+<div class="overlay" id="quitPage">
+
+    <div class="quit-page">
+
+        <div class="modal">
+
+            <div class="modal-icon">
+                🪦
+            </div>
+
+            <div class="quit-title">
+                YOU QUIT.
+            </div>
+
+            <div class="quit-subtitle">
+                Honestly... probably for the best.
+            </div>
+
+            <div class="regret">
+                I knew it that you wouldn't
+                <span>make it to Level 2.</span>
+            </div>
+
+            <div class="wasted-time">
+
+                <div class="wasted-label">
+                    Total time you wasted playing this game
+                </div>
+
+                <div class="wasted-value" id="totalWastedTime">
+                    00:00
+                </div>
+
+            </div>
+
+            <div class="quit-stats">
+
+                <div class="quit-stat">
+                    <strong id="quitLevel">1</strong>
+                    <span>Highest Level</span>
+                </div>
+
+                <div class="quit-stat">
+                    <strong id="quitKeys">0</strong>
+                    <span>Keys Pressed</span>
+                </div>
+
+                <div class="quit-stat">
+                    <strong id="quitMistakes">0</strong>
+                    <span>Mistakes</span>
+                </div>
+
+            </div>
+
+            <p>
+                You could have been doing literally anything else.
+                But at least you have this achievement.
+            </p>
+
+            <button class="primary-btn" id="homeBtn">
+                ← BACK TO HOME
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* ==========================================
+   PLAYER NAME
+========================================== */
+
+function getPlayerName(){
+
+    const possibleKeys = [
+        "playerName",
+        "username",
+        "name",
+        "player",
+        "userName"
+    ];
+
+    for(const key of possibleKeys){
+
+        const value = localStorage.getItem(key);
+
+        if(value && value.trim() !== ""){
+            return value.trim();
+        }
+    }
+
+    /*
+       Do NOT silently use PLAYER.
+
+       If the login page has not saved a name,
+       ask the player here.
+    */
+
+    let enteredName = prompt(
+        "Enter your player name:"
+    );
+
+    if(!enteredName || enteredName.trim() === ""){
+
+        enteredName = "PLAYER";
+
+    }
+
+    enteredName = enteredName.trim();
+
+    localStorage.setItem(
+        "playerName",
+        enteredName
+    );
+
+    return enteredName;
+}
+
+const playerName = getPlayerName();
+
+document.getElementById("playerName").textContent =
+    playerName;
+
+
+/* ==========================================
+   KEYBOARD MAPPING
+========================================== */
+
+const keyboardMapping = {
+
+    q:"A",
+    w:"B",
+    e:"C",
+    r:"D",
+    t:"E",
+    y:"F",
+    u:"G",
+    i:"H",
+    o:"I",
+    p:"J",
+
+    a:"K",
+    s:"L",
+    d:"M",
+    f:"N",
+    g:"O",
+    h:"P",
+    j:"Q",
+    k:"R",
+    l:"S",
+
+    z:"T",
+    x:"U",
+    c:"V",
+    v:"W",
+    b:"X",
+    n:"Y",
+    m:"Z"
+
+};
+
+
+/* ==========================================
+   BUILD KEYBOARD
+========================================== */
+
+const keyboardContainer =
+    document.getElementById("keyboard");
+
+Object.entries(keyboardMapping).forEach(
+    ([physical, output]) => {
+
+        const key = document.createElement("div");
+
+        key.className = "key";
+
+        key.dataset.key = physical;
+
+        key.innerHTML = `
+            <div class="physical">
+                ${physical.toUpperCase()}
+            </div>
+
+            <div class="arrow">
+                ↓
+            </div>
+
+            <div class="output">
+                ${output}
+            </div>
+        `;
+
+        keyboardContainer.appendChild(key);
+
+    }
+);
+
+
+/* ==========================================
+   LEVEL SENTENCES
+========================================== */
+
+const levelSentences = [
+
+    `${playerName.toUpperCase()} LOVE THIS GAME`,
+
+    "THE KEYBOARD MAKES PERFECT SENSE",
+
+    "I AM DEFINITELY NOT CONFUSED",
+
+    "WHY ARE THE LETTERS IN THIS ORDER",
+
+    "THIS KEYBOARD IS COMPLETELY NORMAL",
+
+    "I TRUST THIS BEAUTIFUL KEYBOARD",
+
+    "QWERTY WAS A TERRIBLE IDEA",
+
+    "ABCDEF WOULD HAVE BEEN EASIER",
+
+    "MY BRAIN NEEDS A SHORT BREAK",
+
+    "I THINK I UNDERSTAND THE MAPPING",
+
+    "WAIT WHY DID Q TYPE A",
+
+    "EVERYTHING IS GOING ACCORDING TO PLAN",
+
+    "THIS IS MUCH HARDER THAN IT LOOKS",
+
+    "THE KEYBOARD IS PROBABLY LAUGHING",
+
+    "I WILL REACH LEVEL TWO",
+
+    "THERE IS DEFINITELY A LEVEL TWO",
+
+    "I REFUSE TO GIVE UP",
+
+    "THIS GAME IS COMPLETELY USELESS",
+
+    "WHY AM I STILL PLAYING THIS",
+
+    "MY FINGERS HAVE LEARNED THE CURSED WAY",
+
+    "I HAVE BECOME ONE WITH THE KEYBOARD",
+
+    "THE LETTERS HAVE BETRAYED ME",
+
+    "I SHOULD HAVE USED A NORMAL KEYBOARD",
+
+    "THIS IS SOMEHOW STILL FUN",
+
+    "I AM GETTING CLOSER TO LEVEL TWO",
+
+    "NINETY NINE PERCENT IS BASICALLY ONE HUNDRED",
+
+    "THIS GAME DEFINITELY HAS AN END",
+
+    "I CAN TOTALLY DO THIS",
+
+    "MY KEYBOARD SKILLS ARE EVOLVING",
+
+    "THE CURSED KEYBOARD CANNOT STOP ME"
+
+];
+
+
+/* ==========================================
+   GAME VARIABLES
+========================================== */
+
+let currentLevel = "1";
+
+let typedText = "";
+
+let mistakes = 0;
+
+let keysPressed = 0;
+
+let timeLeft = 600;
+
+let timerInterval = null;
+
+let gameRunning = true;
+
+let totalTimePlayed = 0;
+
+let targetText = levelSentences[0];
+
+
+/* ==========================================
+   ELEMENTS
+========================================== */
+
+const typedTextElement =
+    document.getElementById("typedText");
+
+const targetTextElement =
+    document.getElementById("targetText");
+
+const levelTitle =
+    document.getElementById("levelTitle");
+
+const levelDisplay =
+    document.getElementById("currentLevelDisplay");
+
+const timerElement =
+    document.getElementById("timer");
+
+const mistakesElement =
+    document.getElementById("mistakes");
+
+const keysElement =
+    document.getElementById("keysPressed");
+
+const progressPercentElement =
+    document.getElementById("progressPercent");
+
+const progressFill =
+    document.getElementById("progressFill");
+
+const distanceText =
+    document.getElementById("distanceText");
+
+const messageElement =
+    document.getElementById("message");
+
+
+/* ==========================================
+   FUNNY MESSAGES
+========================================== */
+
+const funnyMessages = [
+
+    "Interesting choice...",
+
+    "That was definitely not the correct key.",
+
+    "The keyboard disagrees.",
+
+    "Try again, keyboard warrior.",
+
+    "Almost... probably.",
+
+    "You are learning the cursed way.",
+
+    "Why did you press that?",
+
+    "The keyboard saw that.",
+
+    "Your fingers need training.",
+
+    "Absolutely magnificent mistake.",
+
+    "This keyboard has no mercy.",
+
+    "You are getting closer... technically.",
+
+    "Level 2 is definitely real.",
+
+    "I believe in you. Probably.",
+
+    "Keep going. Waste more time."
+
+];
+
+
+/* ==========================================
+   FORMAT TIME
+========================================== */
+
+function formatTime(seconds){
+
+    const minutes =
+        Math.floor(seconds / 60);
+
+    const secs =
+        seconds % 60;
+
+    return `${String(minutes).padStart(2,"0")}:${String(secs).padStart(2,"0")}`;
+
+}
+
+
+/* ==========================================
+   UPDATE TIMER
+========================================== */
+
+function updateTimer(){
+
+    timerElement.textContent =
+        formatTime(timeLeft);
+
+    if(timeLeft <= 30){
+
+        timerElement.classList.add("warning");
+
+    }else{
+
+        timerElement.classList.remove("warning");
+
+    }
+
+}
+
+
+/* ==========================================
+   START TIMER
+========================================== */
+
+function startTimer(){
+
+    clearInterval(timerInterval);
+
+    timeLeft = 600;
+
+    updateTimer();
+
+    timerInterval = setInterval(()=>{
+
+        if(!gameRunning) return;
+
+        timeLeft--;
+
+        totalTimePlayed++;
+
+        updateTimer();
+
+        if(timeLeft <= 0){
+
+            clearInterval(timerInterval);
+
+            gameRunning = false;
+
+            showGameOver();
+
+        }
+
+    },1000);
+
+}
+
+
+/* ==========================================
+   UPDATE DISPLAY
+========================================== */
+
+function updateDisplay(){
+
+    typedTextElement.textContent =
+        typedText;
+
+    mistakesElement.textContent =
+        mistakes;
+
+    keysElement.textContent =
+        keysPressed;
+
+    const percent =
+        targetText.length === 0
+        ? 0
+        : Math.floor(
+            (typedText.length / targetText.length) * 100
+        );
+
+    progressPercentElement.textContent =
+        percent + "%";
+
+    progressFill.style.width =
+        Math.min(percent,99) + "%";
+
+    const fakeProgress =
+        Math.min(
+            99.999,
+            parseFloat(
+                currentLevel === "1"
+                ? "0"
+                : "99." + "9".repeat(
+                    Math.min(
+                        currentLevel.length,
+                        4
+                    )
+                )
+            )
+        );
+
+    distanceText.textContent =
+        fakeProgress + "% remaining";
+
+}
+
+
+/* ==========================================
+   GET NEXT LEVEL
+========================================== */
+
+function getNextLevel(level){
+
+    if(level === "1"){
+        return "1.1";
+    }
+
+    const decimal =
+        level.substring(2);
+
+    if(decimal.length === 1){
+
+        const digit =
+            parseInt(decimal);
+
+        if(digit < 9){
+
+            return `1.${digit + 1}`;
+
+        }
+
+        return "1.91";
+
+    }
+
+    const lastDigit =
+        decimal[decimal.length - 1];
+
+    const prefix =
+        decimal.substring(
+            0,
+            decimal.length - 1
+        );
+
+    if(lastDigit !== "9"){
+
+        return `1.${prefix}${Number(lastDigit) + 1}`;
+
+    }
+
+    return `1.${decimal}1`;
+
+}
+
+
+/* ==========================================
+   GET SENTENCE
+========================================== */
+
+function getSentenceForLevel(){
+
+    if(currentLevel === "1"){
+
+        return levelSentences[0];
+
+    }
+
+    const decimal =
+        currentLevel.substring(2);
+
+    let index = 0;
+
+    for(let i = 0; i < decimal.length; i++){
+
+        index +=
+            decimal.charCodeAt(i) - 48;
+
+    }
+
+    index =
+        index % levelSentences.length;
+
+    return levelSentences[index];
+
+}
+
+
+/* ==========================================
+   CHECK COMPLETION
+========================================== */
+
+function checkCompletion(){
+
+    if(
+        typedText === targetText
+    ){
+
+        gameRunning = false;
+
+        clearInterval(timerInterval);
+
+        document
+            .getElementById("successOverlay")
+            .classList.add("show");
+
+    }
+
+}
+
+
+/* ==========================================
+   WRONG KEY EFFECT
+========================================== */
+
+function wrongKey(key){
+
+    mistakes++;
+
+    document.body.classList.remove("shake");
+
+    void document.body.offsetWidth;
+
+    document.body.classList.add("shake");
+
+    const keyElement =
+        document.querySelector(
+            `.key[data-key="${key}"]`
+        );
+
+    if(keyElement){
+
+        keyElement.classList.add("wrong");
+
+        setTimeout(()=>{
+
+            keyElement.classList.remove("wrong");
+
+        },300);
+
+    }
+
+    const randomMessage =
+        funnyMessages[
+            Math.floor(
+                Math.random() *
+                funnyMessages.length
+            )
+        ];
+
+    messageElement.textContent =
+        randomMessage;
+
+    updateDisplay();
+
+}
+
+
+/* ==========================================
+   KEYBOARD INPUT
+========================================== */
+
+document.addEventListener(
+    "keydown",
+    function(event){
+
+        if(!gameRunning) return;
+
+        const physicalKey =
+            event.key.toLowerCase();
+
+        /* SPACE */
+
+        if(event.code === "Space"){
+
+            event.preventDefault();
+
+            keysPressed++;
+
+            const expected =
+                targetText[
+                    typedText.length
+                ];
+
+            if(expected === " "){
+
+                typedText += " ";
+
+            }else{
+
+                wrongKey("space");
+
+            }
+
+            updateDisplay();
+
+            checkCompletion();
+
+            return;
+
+        }
+
+        /* MAPPED KEYS */
+
+        if(
+            !keyboardMapping
+                .hasOwnProperty(physicalKey)
+        ){
+
+            return;
+
+        }
+
+        event.preventDefault();
+
+        keysPressed++;
+
+        const producedLetter =
+            keyboardMapping[
+                physicalKey
+            ];
+
+        const expectedCharacter =
+            targetText[
+                typedText.length
+            ];
+
+        if(
+            producedLetter ===
+            expectedCharacter
+        ){
+
+            typedText +=
+                producedLetter;
+
+            const keyElement =
+                document.querySelector(
+                    `.key[data-key="${physicalKey}"]`
+                );
+
+            if(keyElement){
+
+                keyElement.classList.add("correct");
+
+                setTimeout(()=>{
+
+                    keyElement.classList.remove("correct");
+
+                },180);
+
+            }
+
+            messageElement.textContent =
+                "Correct! Somehow.";
+
+        }else{
+
+            wrongKey(
+                physicalKey
+            );
+
+        }
+
+        updateDisplay();
+
+        checkCompletion();
+
+    }
+);
+
+
+/* ==========================================
+   NEXT LEVEL
+========================================== */
+
+document
+    .getElementById("nextLevelBtn")
+    .addEventListener(
+        "click",
+        startLoading
+    );
+
+
+function startLoading(){
+
+    document
+        .getElementById("successOverlay")
+        .classList.remove("show");
+
+    document
+        .getElementById("loadingOverlay")
+        .classList.add("show");
+
+    let progress = 0;
+
+    const fill =
+        document.getElementById(
+            "loadingFill"
+        );
+
+    const loadingMessage =
+        document.getElementById(
+            "loadingMessage"
+        );
+
+    const messages = [
+
+        "Calculating your progress...",
+
+        "Checking distance to Level 2...",
+
+        "Almost there...",
+
+        "99% complete...",
+
+        "99.9% complete...",
+
+        "99.99% complete...",
+
+        "Wait...",
+
+        "Something seems wrong...",
+
+        "Recalculating...",
+
+        "This is taking longer than expected..."
+
+    ];
+
+    const loadingInterval =
+        setInterval(()=>{
+
+            progress +=
+                Math.random() * 5;
+
+            if(progress >= 99){
+
+                progress = 99;
+
+            }
+
+            fill.style.width =
+                progress + "%";
+
+            const index =
+                Math.floor(
+                    (progress / 100) *
+                    messages.length
+                );
+
+            loadingMessage.textContent =
+                messages[
+                    Math.min(
+                        index,
+                        messages.length - 1
+                    )
+                ];
+
+        },250);
+
+
+    setTimeout(()=>{
+
+        clearInterval(
+            loadingInterval
+        );
+
+        currentLevel =
+            getNextLevel(
+                currentLevel
+            );
+
+        document
+            .getElementById("loadingOverlay")
+            .classList.remove("show");
+
+        beginNextLevel();
+
+    },4000);
+
+}
+
+
+/* ==========================================
+   BEGIN NEXT LEVEL
+========================================== */
+
+function beginNextLevel(){
+
+    typedText = "";
+
+    mistakes = 0;
+
+    keysPressed = 0;
+
+    targetText =
+        getSentenceForLevel();
+
+    levelTitle.textContent =
+        "LEVEL " + currentLevel;
+
+    levelDisplay.textContent =
+        currentLevel;
+
+    targetTextElement.textContent =
+        targetText;
+
+    messageElement.textContent =
+        "Oh... this isn't Level 2.";
+
+    gameRunning = true;
+
+    startTimer();
+
+    updateDisplay();
+
+}
+
+
+/* ==========================================
+   GAME OVER
+========================================== */
+
+function showGameOver(){
+
+    document
+        .getElementById("gameOverOverlay")
+        .classList.add("show");
+
+}
+
+
+/* ==========================================
+   QUIT GAME
+========================================== */
+
+document
+    .getElementById("quitBtn")
+    .addEventListener(
+        "click",
+        quitGame
+    );
+
+
+function quitGame(){
+
+    /*
+       Stop the game completely.
+    */
+
+    gameRunning = false;
+
+    clearInterval(timerInterval);
+
+
+    /*
+       Calculate time spent.
+
+       Started with 600 seconds.
+       Whatever remains is subtracted.
+    */
+
+    const timeSpent =
+        600 - timeLeft;
+
+    /*
+       If the player has played multiple
+       levels, add the current session time.
+    */
+
+    totalTimePlayed += timeSpent;
+
+
+    /*
+       Prevent accidental double counting.
+    */
+
+    const finalTime =
+        Math.max(
+            totalTimePlayed,
+            0
+        );
+
+
+    /*
+       Update quit screen.
+    */
+
+    document.getElementById(
+        "totalWastedTime"
+    ).textContent =
+        formatTime(finalTime);
+
+    document.getElementById(
+        "quitLevel"
+    ).textContent =
+        currentLevel;
+
+    document.getElementById(
+        "quitKeys"
+    ).textContent =
+        keysPressed;
+
+    document.getElementById(
+        "quitMistakes"
+    ).textContent =
+        mistakes;
+
+
+    /*
+       Hide other overlays.
+    */
+
+    document
+        .getElementById("successOverlay")
+        .classList.remove("show");
+
+    document
+        .getElementById("loadingOverlay")
+        .classList.remove("show");
+
+    document
+        .getElementById("gameOverOverlay")
+        .classList.remove("show");
+
+
+    /*
+       Show quit page.
+    */
+
+    document
+        .getElementById("quitPage")
+        .classList.add("show");
+
+}
+
+
+/* ==========================================
+   BACK TO INDEX.HTML
+========================================== */
+
+document
+    .getElementById("homeBtn")
+    .addEventListener(
+        "click",
+        function(){
+
+            window.location.href =
+                "index.html";
+
+        }
+    );
+
+
+/* ==========================================
+   DARK MODE
+========================================== */
+
+const themeBtn =
+    document.getElementById(
+        "themeBtn"
+    );
+
+function loadTheme(){
+
+    const savedTheme =
+        localStorage.getItem(
+            "keyboardTheme"
+        );
+
+    if(savedTheme === "dark"){
+
+        document.body.classList.add(
+            "dark"
+        );
+
+        themeBtn.textContent = "☀️";
+
+    }
+
+}
+
+themeBtn.addEventListener(
+    "click",
+    function(){
+
+        document.body.classList.toggle(
+            "dark"
+        );
+
+        const isDark =
+            document.body.classList.contains(
+                "dark"
+            );
+
+        localStorage.setItem(
+            "keyboardTheme",
+            isDark
+            ? "dark"
+            : "light"
+        );
+
+        themeBtn.textContent =
+            isDark
+            ? "☀️"
+            : "🌙";
+
+    }
+);
+
+
+/* ==========================================
+   INITIALIZE
+========================================== */
+
+loadTheme();
+
+targetText =
+    levelSentences[0];
+
+targetTextElement.textContent =
+    targetText;
+
+updateDisplay();
+
+startTimer();
+
+</script>
+
+</body>
+</html>
