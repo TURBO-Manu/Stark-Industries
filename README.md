@@ -71,7 +71,7 @@ For Hardware:
 *Add caption explaining the schematic*
 
 # Build Photos
-![Components](Add photo of your components here)
+![Components]([Add photo of your components here](https://drive.google.com/file/d/1yCn1LuJcIfxi9FlJHFBMMa0jJaBLpVK8/view?usp=drive_link))
 *List out all components shown*
 
 ![Build](Add photos of build process here)
